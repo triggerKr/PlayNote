@@ -54,7 +54,7 @@ public class AdminController {
 	@RequestMapping(value = "/admin/loginForm", method = {RequestMethod.GET, RequestMethod.POST})
 	public String login(Locale locale, Model model, HttpServletRequest request) {
 		
-	    //2020-04-07 git 테스트
+	    //2020-04-07 git 테스트 1
 	    System.out.println("admin/loginForm");
 		return "admin/loginForm";
 		
