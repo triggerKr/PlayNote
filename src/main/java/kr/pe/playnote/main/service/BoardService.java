@@ -10,6 +10,8 @@ public interface BoardService {
 	public List<BoardDto> getPageList(HashMap<String, Object> paramMap);
 	public List<BoardDto> getTotalCount(HashMap<String, Object> paramMap);
 	public BoardDto getNoticeDetail(HashMap<String, Object> paramMap);
+	public int deleteList(HashMap<String, List<String>> paramMap);
+	
 	
 	public List<BoardDto> getBoardListTest();
 }

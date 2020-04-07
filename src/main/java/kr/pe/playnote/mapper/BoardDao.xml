@@ -4,6 +4,25 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.pe.playnote.main.dao.IBoardDao">
+    
+    
+    <delete id="deleteList_BACK" parameterType="java.util.HashMap">
+		DELETE FROM BOARD
+		WHERE 1 = 1
+		AND  UUID IN
+		<where>
+           <foreach collection="sUser_type" item="type" index="index" open="(" close=")" separator=",">
+		       #{type[index],jdbcType=VARCHAR}
+           </foreach>
+		</where>
+    </delete>
+    
+    <delete id="deleteList" parameterType="java.util.HashMap">
+		DELETE FROM BOARD
+		WHERE 1 = 1
+		AND  UUID = #{UUID}
+    </delete>
+    
     <select id="listDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
         SELECT @rownum := @rownum+1 AS rnum
               ,UUID             AS  uuid          
@@ -127,9 +146,6 @@
     </insert>
     
     
-    <delete id="deleteDao">
-    
-    </delete>
     
     
 </mapper>

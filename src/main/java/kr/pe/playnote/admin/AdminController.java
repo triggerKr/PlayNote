@@ -1,6 +1,7 @@
 package kr.pe.playnote.admin;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -25,7 +26,6 @@ import kr.pe.playnote.com.PageMaker;
 import kr.pe.playnote.com.ServletUtils;
 import kr.pe.playnote.com.dto.MemberDto;
 import kr.pe.playnote.com.service.MemberService;
-import kr.pe.playnote.main.MainController;
 import kr.pe.playnote.main.dto.BoardDto;
 import kr.pe.playnote.main.service.BoardService;
 
@@ -38,30 +38,28 @@ public class AdminController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     
-    
     @Autowired
     private BoardService boardService;
 	@Autowired
     private MemberService memberService;
 	
-	// ´Ù±¹¾î
+	// ë‹¤êµ­ì–´
 	@Autowired SessionLocaleResolver localeResolver; 
 	@Autowired MessageSource messageSource;
 
 	/**
-	 * ·Î±×ÀÎÆû È­¸é
+	 * ë¡œê·¸ì¸í¼ í™”ë©´
 	 */
 	@RequestMapping(value = "/admin/loginForm", method = {RequestMethod.GET, RequestMethod.POST})
 	public String login(Locale locale, Model model, HttpServletRequest request) {
 		
-	    //2020-04-07 git Å×½ºÆ® 1
 	    System.out.println("admin/loginForm");
 		return "admin/loginForm";
 		
 	}
 	
 	/**
-	 * ·Î±×ÀÎ @ResponseBody  
+	 * ë¡œê·¸ì¸ @ResponseBody  
 	 */
 	@RequestMapping(value = "/admin/signIn", method = {RequestMethod.GET, RequestMethod.POST})
 	public String signIn(Locale locale, Model model, HttpServletRequest request) {
@@ -98,9 +96,9 @@ public class AdminController {
 		}
 		
 		HashMap<String, Object> myHashMap1 = new HashMap<String, Object>();
-        JSONObject jsonObject1 = new JSONObject(); // Áß°ıÈ£¿¡ µé¾î°¥ ¼Ó¼º Á¤ÀÇ { "a" : "1", "b" : "2" }
-        JSONArray jsonArray1 = new JSONArray(); // ´ë°ıÈ£ Á¤ÀÇ [{ "a" : "1", "b" : "2" }]
-        JSONObject finalJsonObject1 = new JSONObject(); // Áß°ıÈ£·Î °¨½Î ´ë°ıÈ£ÀÇ ÀÌ¸§À» Á¤ÀÇÇÔ { "c" : [{  "a" : "1", "b" : "2" }] }
+        JSONObject jsonObject1 = new JSONObject(); // ì¤‘ê´„í˜¸ì— ë“¤ì–´ê°ˆ ì†ì„± ì •ì˜ { "a" : "1", "b" : "2" }
+        JSONArray jsonArray1 = new JSONArray(); // ëŒ€ê´„í˜¸ ì •ì˜ [{ "a" : "1", "b" : "2" }]
+        JSONObject finalJsonObject1 = new JSONObject(); // ì¤‘ê´„í˜¸ë¡œ ê°ì‹¸ ëŒ€ê´„í˜¸ì˜ ì´ë¦„ì„ ì •ì˜í•¨ { "c" : [{  "a" : "1", "b" : "2" }] }
         
         
         finalJsonObject1.put("msgCode", msgCode);
@@ -121,7 +119,7 @@ public class AdminController {
 	
 
     /**
-     * °ø½Ã»çÇ× ¸®½ºÆ®
+     * ê³µì‹œì‚¬í•­ ë¦¬ìŠ¤íŠ¸
      */
     @RequestMapping(value = "/admin/noticeList", method = {RequestMethod.GET, RequestMethod.POST})
     public String noticeList(Locale locale, Model model, HttpServletRequest request) {
@@ -151,17 +149,18 @@ public class AdminController {
         
         if (request.getParameter("pagenum") != null)
             cpagenum = Integer.parseInt(request.getParameter("pagenum"));
-                /*---------ÆäÀÌÁö °´Ã¼¿¡ »õ·Î¿î Á¤º¸ ´Ù½Ã ÁöÁ¤ÇØÁÖ´Â ºÎºĞ------------------*/
-        pagemaker.setTotalcount(totalCount);//ÀüÃ¼ °Ô½Ã±Û °³¼ö ÁöÁ¤ÇÑ´Ù
-        pagemaker.setPagenum(cpagenum-1);//ÇöÀç ÆäÀÌÁö¸¦ ÆäÀÌÁö °´Ã¼¿¡ ´Ù½Ã ÁöÁ¤ÇØÁØ´Ù//¸î¹ø ÆäÀÌÁöÀÎÁö PageMaker¿¡ ¼¼ÆÃÇÑ´Ù
-        pagemaker.setContentnum(Code.PAGE_LIMIT_10);//ÇÑ ÆäÀÌÁö¿¡ ¸î°³¾¿ º¸¿©ÁÙÁö ¼¼ÆÃÇÑ´Ù
-        pagemaker.setCurrentblock(cpagenum);//ÇöÀç ÆäÀÌÁöºí·ÏÀÌ ¸î¹øÀÎÁö ÇöÀç ÆäÀÌÁö ¹øÈ£¸¦ ÅëÇØ¼­ ÁöÁ¤ÇÑ´Ù
-        pagemaker.setLastblock(pagemaker.getTotalcount());//¸¶Áö¸· ºí·Ï ¹øÈ£¸¦ ÀüÃ¼ °Ô½Ã±Û ¼ö¸¦ ÅëÇØ¼­ Á¤ÇÑ´Ù
-        /*---------ÆäÀÌÁö °´Ã¼¿¡ »õ·Î¿î Á¤º¸ ´Ù½Ã ÁöÁ¤ÇØÁÖ´Â ºÎºĞ------------------*/
-        pagemaker.prevnext(cpagenum);//ÇöÀç ÆäÀÌÁö ¹øÈ£·Î È­»ìÇ¥ ³ªÅ¸³¾Áö °áÁ¤ÇÑ´Ù
-        pagemaker.setStartPage(pagemaker.getCurrentblock());//½ÃÀÛÆäÀÌÁö ¹øÈ£¸¦ ÇöÀç ÆäÀÌÁö ºí·ÏÀ¸·Î Á¤ÇÑ´Ù
-        pagemaker.setEndPage(pagemaker.getLastblock(),pagemaker.getCurrentblock());
-        //ÇöÀç ºí·Ï ¹øÈ£¿Í ¸¶Áö¸· ºí·Ï ¹øÈ£¸¦ º¸³»¼­ ´ëÁ¶ÇÏ°í ÆäÀÌÁö ºí·ÏÀÇ ¸¶Áö¸· ¹øÈ£¸¦ ÁöÁ¤ÇÑ´Ù
+
+        /*---------í˜ì´ì§€ ê°ì²´ì— ìƒˆë¡œìš´ ì •ë³´ ë‹¤ì‹œ ì§€ì •í•´ì£¼ëŠ” ë¶€ë¶„------------------*/
+		pagemaker.setTotalcount(totalCount);//ì „ì²´ ê²Œì‹œê¸€ ê°œìˆ˜ ì§€ì •í•œë‹¤
+		pagemaker.setPagenum(cpagenum-1);//í˜„ì¬ í˜ì´ì§€ë¥¼ í˜ì´ì§€ ê°ì²´ì— ë‹¤ì‹œ ì§€ì •í•´ì¤€ë‹¤//ëª‡ë²ˆ í˜ì´ì§€ì¸ì§€ PageMakerì— ì„¸íŒ…í•œë‹¤
+		pagemaker.setContentnum(Code.PAGE_LIMIT_10);//í•œ í˜ì´ì§€ì— ëª‡ê°œì”© ë³´ì—¬ì¤„ì§€ ì„¸íŒ…í•œë‹¤
+		pagemaker.setCurrentblock(cpagenum);//í˜„ì¬ í˜ì´ì§€ë¸”ë¡ì´ ëª‡ë²ˆì¸ì§€ í˜„ì¬ í˜ì´ì§€ ë²ˆí˜¸ë¥¼ í†µí•´ì„œ ì§€ì •í•œë‹¤
+		pagemaker.setLastblock(pagemaker.getTotalcount());//ë§ˆì§€ë§‰ ë¸”ë¡ ë²ˆí˜¸ë¥¼ ì „ì²´ ê²Œì‹œê¸€ ìˆ˜ë¥¼ í†µí•´ì„œ ì •í•œë‹¤
+		/*---------í˜ì´ì§€ ê°ì²´ì— ìƒˆë¡œìš´ ì •ë³´ ë‹¤ì‹œ ì§€ì •í•´ì£¼ëŠ” ë¶€ë¶„------------------*/
+		pagemaker.prevnext(cpagenum);//í˜„ì¬ í˜ì´ì§€ ë²ˆí˜¸ë¡œ í™”ì‚´í‘œ ë‚˜íƒ€ë‚¼ì§€ ê²°ì •í•œë‹¤
+		pagemaker.setStartPage(pagemaker.getCurrentblock());//ì‹œì‘í˜ì´ì§€ ë²ˆí˜¸ë¥¼ í˜„ì¬ í˜ì´ì§€ ë¸”ë¡ìœ¼ë¡œ ì •í•œë‹¤
+		pagemaker.setEndPage(pagemaker.getLastblock(),pagemaker.getCurrentblock());
+		//í˜„ì¬ ë¸”ë¡ ë²ˆí˜¸ì™€ ë§ˆì§€ë§‰ ë¸”ë¡ ë²ˆí˜¸ë¥¼ ë³´ë‚´ì„œ ëŒ€ì¡°í•˜ê³  í˜ì´ì§€ ë¸”ë¡ì˜ ë§ˆì§€ë§‰ ë²ˆí˜¸ë¥¼ ì§€ì •í•œë‹¤
         
         
         paramMap.put("PAGE_NUM", pagemaker.getPagenum()*10);
@@ -173,21 +172,50 @@ public class AdminController {
         List<BoardDto> boardList = boardService.getPageList(paramMap);
         
         model.addAttribute("noticeList", boardList);
-        model.addAttribute("page", pagemaker);//ÆäÀÌÁö ¹øÈ£ °´Ã¼ .jspÆäÀÌÁö·Î Àü´Ş
+        model.addAttribute("page", pagemaker);//í˜ì´ì§€ ë²ˆí˜¸ ê°ì²´ .jspí˜ì´ì§€ë¡œ ì „ë‹¬
        
         return "admin/noticeList";
+        
+    }
+    
+
+    /**
+     * ê³µì‹œì‚¬í•­ ì‚­ì œ
+     */ 
+    @RequestMapping(value = "/admin/boardNoticeListDelete", method = {RequestMethod.GET, RequestMethod.POST})
+    public String boardNoticeDelete(Locale locale, Model model, HttpServletRequest request, BoardDto dto) {
+        
+        if( !ServletUtils.aliveSession(request)){ 
+            return "index";
+        }
+        
+        HashMap<String, List<String>> paramMap =  new HashMap<String, List<String>>();
+        paramMap.put("list", dto.getListUuid());
+        boardService.deleteList(paramMap);
+        
+		String msgCode = "";
+		String msgContent = "";
+        msgCode = "SUCCESS";
+        msgContent = "ì‚­ì œí•˜ì˜€ìŠµë‹ˆë‹¤.";
+        JSONObject finalJsonObject1 = new JSONObject();
+        finalJsonObject1.put("msgCode", msgCode);
+        finalJsonObject1.put("msgContent", msgContent);
+        
+        String json = finalJsonObject1.toString();
+	    request.setAttribute("data", json);
+		return "comm/json";
         
     }
 	@RequestMapping(value = "/admin/message", method = RequestMethod.GET) 
 	public String i18n(Locale locale, HttpServletRequest request, Model model) {
 	    
-	    // RequestMapingHandler·Î ºÎÅÍ ¹ŞÀº Locale °´Ã¼¸¦ Ãâ·ÂÇØ º¾´Ï´Ù. 
-	    logger.info("Welcome i18n! The client locale is {}.", locale); // localeResolver ·ÎºÎÅÍ Locale À» Ãâ·ÂÇØ º¾´Ï´Ù. 
+	    // RequestMapingHandlerë¡œ ë¶€í„° ë°›ì€ Locale ê°ì²´ë¥¼ ì¶œë ¥í•´ ë´…ë‹ˆë‹¤. 
+	    logger.info("Welcome i18n! The client locale is {}.", locale); // localeResolver ë¡œë¶€í„° Locale ì„ ì¶œë ¥í•´ ë´…ë‹ˆë‹¤. 
 	    logger.info("Session locale is {}.", localeResolver.resolveLocale(request));
 	    logger.info("site.title : {}", messageSource.getMessage("site.title", null, "default text", locale));
-	    logger.info("site.count : {}", messageSource.getMessage("site.count", new String[] {"Ã¹¹øÂ°"}, "default text", locale));
-	    logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale)); //logger.info("not.exist ±âº»°ª ¾øÀ½ : {}", messageSource.getMessage("not.exist", null, locale)); 
-	    // JSP ÆäÀÌÁö¿¡¼­ EL À» »ç¿ëÇØ¼­ arguments ¸¦ ³ÖÀ» ¼ö ÀÖµµ·Ï °ªÀ» º¸³½´Ù. 
+	    logger.info("site.count : {}", messageSource.getMessage("site.count", new String[] {"ì²«ë²ˆì§¸"}, "default text", locale));
+	    logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale)); //logger.info("not.exist ê¸°ë³¸ê°’ ì—†ìŒ : {}", messageSource.getMessage("not.exist", null, locale)); 
+	    // JSP í˜ì´ì§€ì—ì„œ EL ì„ ì‚¬ìš©í•´ì„œ arguments ë¥¼ ë„£ì„ ìˆ˜ ìˆë„ë¡ ê°’ì„ ë³´ë‚¸ë‹¤. 
 	    model.addAttribute("siteCount", messageSource.getMessage("msg.first", null, locale)); 
 	    return "admin/message";
 	}

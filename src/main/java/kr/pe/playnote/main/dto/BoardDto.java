@@ -1,5 +1,6 @@
 package kr.pe.playnote.main.dto;
 
+import java.util.List;
 
 public class BoardDto {
 
@@ -16,7 +17,8 @@ public class BoardDto {
     private String updateUser;
     private int rnum;
     private int    totalCount;
-
+    private List<String>    listUuid;
+    
 	public BoardDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -143,4 +145,13 @@ public class BoardDto {
 	public void setTotalcount(int totalCount) {
 		this.totalCount = totalCount;
 	}
+
+	public List<String> getListUuid() {
+		return listUuid;
+	}
+
+	public void setListUuid(List<String> listUuid) {
+		this.listUuid = listUuid;
+	}
+
 }

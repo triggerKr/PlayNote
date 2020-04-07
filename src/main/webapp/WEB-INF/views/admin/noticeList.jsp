@@ -34,10 +34,10 @@
                     url = "/";
                     break;
                 case "BOARD_NOTICE" :
-                    url = "/main/boardNotice?pagenum=1&contentnum=0";
+                    url = "/admin/boardNotice?pagenum=1&contentnum=0";
                     break;
                 case "BOARD_USER" :
-                    url = "/main/boardUser";
+                    url = "/admin/boardUser";
                     break;
                 default :
                     url = "/";
@@ -50,19 +50,75 @@
         
         function page(idx){
             var pagenum = idx;              
-            location.href="${pageContext.request.contextPath}/main/boardNotice?pagenum="+pagenum;    
+            location.href="${pageContext.request.contextPath}/admin/boardNotice?pagenum="+pagenum;    
         }
         
 
         function goDetail(uuid){            
             
-            url = "${pageContext.request.contextPath}/main/boardNoticeDetail?uuid="+uuid; 
+            url = "${pageContext.request.contextPath}/admin/boardNoticeDetail?uuid="+uuid; 
             
             document.form.action  = url;                                                   
             document.form.method = "POST";
             document.form.submit();
         
         }
+        
+        function noticeDelete(){            
+            
+            document.form.action  = url;                                                   
+            document.form.method = "POST";
+            document.form.submit();
+        
+        }
+
+        function noticeDelete(){
+        	
+             var paraDelete =[];
+        	 $("input[name='listUuid']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+        		 paraDelete.push($(this).val());
+             });
+        	 
+             var data = { "listUuid": paraDelete };
+             console.log(data);
+             
+             $.ajax({
+                 type : "POST", //전송방식을 지정한다 (POST,GET)
+                 url : "${pageContext.request.contextPath}/admin/boardNoticeListDelete",//호출 URL을 설정한다. GET방식일경우 뒤에 파라티터를 붙여서 사용해도된다.
+                 data: data, 
+                 traditional:true,
+                 async: true,
+                 dataType : "json",//호출한 페이지의 형식이다. xml,json,html,text등의 여러 방식을 사용할 수 있다.
+                 success : function(data) { 
+                     console.log("========================================");
+                     console.log("==== data ==>"+data);
+                     console.log("==== data.msgCode ==>"+data.msgCode);
+                     console.log("==== data.msgContent ==>"+data.msgContent);
+                     if( data.msgCode == "SUCCESS"){
+                         success(); 
+                      
+                         var modal = document.getElementById("alertModal");
+                         modal.style.display = "none";
+                     }else{
+                    	
+                    	 var modal = document.getElementById("alertModal");
+                         modal.style.display = "block";
+                         $("p").text(data.msgContent);
+                     }
+                     
+                     s
+                  }, 
+                  error: function(jqXHR, textStatus, errorThrown) { 
+                	  var modal = document.getElementById("alertModal");
+                	  modal.style.display = "block";
+                      $("p").text("ajax  error");
+                      console.log("ajax  error"); 
+                      //alert(jqXHR.responseText); 
+                  }                  
+             });
+        }  
+        
+        
     </script>
   <body>
     <form name="form" method="post">
@@ -85,7 +141,7 @@
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
               <h1 class="page-header">Play Note  <img src="${pageContext.request.contextPath}/resources/image/icons-motorcycle-01.png" width="50" height="50" border="1" alt=""></h1>
               
-              <h2 class="sub-header"><spring:message code="notice" text="default text" />22233333</h2>
+              <h2 class="sub-header"><spring:message code="notice" text="default text" /></h2>
               <div class="table-responsive">
                 <table class="table table-striped">
                   <thead>
@@ -95,6 +151,7 @@
                       <th><spring:message code="title" text="default text" /></th>
                       <th><spring:message code="hit" text="default text" /></th>
                       <th><spring:message code="create_date" text="default text" /></th>
+                      <th><button type="button" onclick="noticeDelete()" class="btn btn-xs btn-info"><spring:message code="delete" text="default text" /></button></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -105,6 +162,10 @@
                             <td><a href="javascript:goDetail('${dto.uuid}');">${dto.subject}</a></td>
                             <td>${dto.hits}</td>
                             <td>${dto.createDatetime}</td>
+                            <td>
+                              <input type="checkbox" name="listUuid" value="${dto.uuid}">
+                            </td>
+
                         </tr>
                     </c:forEach>
                   </tbody>

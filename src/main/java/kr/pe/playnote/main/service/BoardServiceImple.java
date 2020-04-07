@@ -70,6 +70,29 @@ public class BoardServiceImple implements BoardService{
     }
 	
 	@Override
+    public int deleteList(HashMap<String, List<String>> paramMap) {
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		int result = 0;
+		List<String> list = paramMap.get("list");
+		for(int i = 0; i < list.size(); i++){
+	        String uuid = list.get(i);
+	        hm.put("UUID", uuid);
+	        String sqlId = ".deleteList";
+			String sql = sqlSession.getConfiguration().getMappedStatement(namespace+sqlId).getBoundSql(hm).getSql();
+			 result = sqlSession.delete(namespace+sqlId, hm);
+			System.out.println("==== getNoticeDetail ====");
+		    System.out.println(sql);
+	    }
+
+		
+		
+
+
+	    
+        return result;
+    }
+	@Override
     public List<BoardDto> getBoardListTest() {
 		
 		HashMap<String, Object> paramMap =  new HashMap<String, Object>();
@@ -82,8 +105,7 @@ public class BoardServiceImple implements BoardService{
         
         return dto;
     }
-	
-	
+
 
 
 
