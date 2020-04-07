@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.pe.playnote.main.dao.IBoardDao">
+    <select id="listDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+        SELECT @rownum := @rownum+1 AS rnum
+              ,UUID             AS  uuid          
+              ,BOARD_CODE       AS  boardCode     
+              ,TITLE            AS  title         
+              ,USER_ID          AS  userId        
+              ,SUBJECT          AS  subject       
+              ,CONTENTS         AS  contents      
+              ,HITS             AS  hits          
+              ,CREATE_DATETIME  AS  createDatetime
+              ,CREATE_USER      AS  createUser
+              ,UPDATE_DATETIME  AS  updateDatetime
+              ,UPDATE_USER      AS  updateUser
+        FROM   BOARD
+              ,(SELECT @rownum := 0) AS R
+        WHERE  1 = 1
+        <if test='BOARD_CODE != null'>
+          AND BOARD_CODE = #{BOARD_CODE}
+        </if>
+        <if test='PAGE_LIMIT != null'>
+          ORDER BY CREATE_DATETIME DESC LIMIT #{PAGE_LIMIT}
+        </if>
+        <if test='PAGE_LIMIT == null'>
+          ORDER BY CREATE_DATETIME DESC LIMIT 5
+        </if>
+    </select>
+    
+    <select id="pageListDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+        SELECT  BOARD.rnum            AS  rnum          
+               ,BOARD.uuid            AS  uuid          
+               ,BOARD.boardCode       AS  boardCode     
+               ,BOARD.title           AS  title         
+               ,BOARD.userId          AS  userId        
+               ,BOARD.subject         AS  subject       
+               ,BOARD.contents        AS  contents      
+               ,BOARD.hits            AS  hits          
+               ,BOARD.createDatetime  AS  createDatetime
+               ,BOARD.createUser      AS  createUser
+               ,BOARD.updateDatetime  AS  updateDatetime
+               ,BOARD.updateUser      AS  updateUser
+        FROM(
+           SELECT  @rownum := @rownum+1 AS rnum
+                  ,UUID             AS  uuid          
+                  ,BOARD_CODE       AS  boardCode     
+                  ,TITLE            AS  title         
+                  ,USER_ID          AS  userId        
+                  ,SUBJECT          AS  subject       
+                  ,CONTENTS         AS  contents      
+                  ,HITS             AS  hits          
+                  ,CREATE_DATETIME  AS  createDatetime
+                  ,CREATE_USER      AS  createUser
+                  ,UPDATE_DATETIME  AS  updateDatetime
+                  ,UPDATE_USER      AS  updateUser 
+           FROM    BOARD 
+                  ,(SELECT @rownum := 0) AS R
+           WHERE  1 = 1
+           <if test='BOARD_CODE != null'>
+               AND BOARD_CODE = #{BOARD_CODE}
+           </if>
+           ORDER BY CREATE_DATETIME DESC
+        ) BOARD
+        LIMIT #{PAGE_NUM}, #{PAGE_LIMIT}
+    </select>
+    
+    <select id="totalCountDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+           SELECT COUNT(*) AS totalCount
+           FROM   BOARD 
+           WHERE  1 = 1
+           <if test='BOARD_CODE != null'>
+               AND BOARD_CODE = #{BOARD_CODE}
+           </if>
+    </select>
+    
+    <select id="noticeDetail" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+           SELECT  UUID             AS  uuid          
+                  ,BOARD_CODE       AS  boardCode     
+                  ,TITLE            AS  title         
+                  ,USER_ID          AS  userId        
+                  ,SUBJECT          AS  subject       
+                  ,CONTENTS         AS  contents      
+                  ,HITS             AS  hits          
+                  ,CREATE_DATETIME  AS  createDatetime
+                  ,CREATE_USER      AS  createUser
+                  ,UPDATE_DATETIME  AS  updateDatetime
+                  ,UPDATE_USER      AS  updateUser
+           FROM   BOARD 
+           WHERE  1 = 1
+           AND    UUID = #{UUID}
+    </select>
+ 
+     <!-- 주석 내용
+     <mapper namespace="playnote.main.dao.IBoardDao">
+    <select id="listDao" resultType="playnote.main.dto.BoardDto">
+        SELECT   1        AS hits
+                ,EMAIL    AS userId
+                ,PASSWORD AS subject
+                ,USERNAME AS hits
+                ,NICKNAME AS createDatetime
+        FROM   MEMBER
+        WHERE  1 = 1        
+    </select>
+    <select id="listDao" resultType="playnote.main.dto.BoardDto">
+        SELECT UUID             AS  uuid,          
+               BOARD_CODE       AS  boardCode,     
+               TITLE            AS  title,         
+               USER_ID          AS  userId,        
+               SUBJECT          AS  subject,       
+               CONTENTS         AS  contents,      
+               HITS             AS  hits,          
+               CREATE_DATETIME  AS  createDatetime,
+               CREATE_USER      AS  createUser,
+               UPDATE_DATETIME  AS  updateDatetime,
+               UPDATE_USER      AS  updateUser
+        FROM   BOARD
+        WHERE  1 = 1        
+    </select>
+     -->
+    
+    <insert id="writeDao">
+        
+    </insert>
+    
+    
+    <delete id="deleteDao">
+    
+    </delete>
+    
+    
+</mapper>
