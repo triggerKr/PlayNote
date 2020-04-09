@@ -3328,6 +3328,13 @@ fieldset[disabled] .btn-link:focus {
   line-height: 1.3333333;
   border-radius: 6px;
 }
+.btn-lg11,
+.btn-group-lg11 > .btn {
+  padding: 10px 16px;
+  font-size: 15px;
+  line-height: 1.3333333;
+  border-radius: 5px;
+}
 .btn-sm,
 .btn-group-sm > .btn {
   padding: 5px 10px;

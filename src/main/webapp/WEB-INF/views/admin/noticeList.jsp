@@ -34,13 +34,13 @@
                     url = "/";
                     break;
                 case "BOARD_NOTICE" :
-                    url = "/admin/boardNotice?pagenum=1&contentnum=0";
+                    url = "${pageContext.request.contextPath}/admin/boardNotice?pagenum=1&contentnum=0";
                     break;
                 case "BOARD_USER" :
-                    url = "/admin/boardUser";
+                    url = "${pageContext.request.contextPath}/admin/boardUser";
                     break;
                 default :
-                    url = "/";
+                    url = "${pageContext.request.contextPath}/";
             }
             
             document.form.action  = url;                                                   
@@ -52,7 +52,6 @@
             var pagenum = idx;              
             location.href="${pageContext.request.contextPath}/admin/boardNotice?pagenum="+pagenum;    
         }
-        
 
         function goDetail(uuid){            
             
@@ -94,19 +93,27 @@
                      console.log("==== data ==>"+data);
                      console.log("==== data.msgCode ==>"+data.msgCode);
                      console.log("==== data.msgContent ==>"+data.msgContent);
-                     if( data.msgCode == "SUCCESS"){
-                         success(); 
-                      
+                     console.log("==== data.msgArray ==>"+data.msgArray);
+                     var magCode;
+                     var msgContent;
+                     for(var i=0; i<data.msgArray.length; i++) {
+                    	 magCode = data.msgArray[i].msgCode;
+                    	 msgContent = data.msgArray[i].msgContent;
+                    	 console.log("==== msgArray ==>"+i);
+                    	 console.log("==== msgCode ==>"+data.msgArray[i].msgCode);
+                    	 console.log("==== msgContent ==>"+data.msgArray[i].msgContent);
+                     }
+                    
+                     if( magCode == "SUCCESS"){
                          var modal = document.getElementById("alertModal");
                          modal.style.display = "none";
+                         success(); 
                      }else{
                     	
                     	 var modal = document.getElementById("alertModal");
                          modal.style.display = "block";
-                         $("p").text(data.msgContent);
+                         $("p").text(msgContent);
                      }
-                     
-                     s
                   }, 
                   error: function(jqXHR, textStatus, errorThrown) { 
                 	  var modal = document.getElementById("alertModal");
@@ -117,9 +124,24 @@
                   }                  
              });
         }  
+
+        function success(){
+        	location.href  = "${pageContext.request.contextPath}/admin/noticeList";
+        }  
         
-        
+        function close(){
+            var modal = document.getElementById("alertModal");
+            modal.style.display = "none";
+        }
+
+        function add(){              
+            location.href="${pageContext.request.contextPath}/admin/boardNoticeAddForm";    
+        }
     </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+  
   <body>
     <form name="form" method="post">
         <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
@@ -141,7 +163,19 @@
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
               <h1 class="page-header">Play Note  <img src="${pageContext.request.contextPath}/resources/image/icons-motorcycle-01.png" width="50" height="50" border="1" alt=""></h1>
               
-              <h2 class="sub-header"><spring:message code="notice" text="default text" /></h2>
+              <h2 class="sub-header">
+                <spring:message code="notice" text="default text" />
+                <button type="button" onclick="add()" class="btn btn-lg11 btn-info">
+                  <spring:message code="add" text="default text" />              
+                </button> 
+              </h2>
+              
+              <!-- Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창         block display:none display:block -->
+			  <div id="alertModal"class="alert alert-warning alert-dismissible fade in" style="display:none;">
+			    <a href="javascript:close();" class="close" aria-label="close">&times;</a>
+			    <strong>Warning!</strong><p></p>
+			  </div>
+			
               <div class="table-responsive">
                 <table class="table table-striped">
                   <thead>

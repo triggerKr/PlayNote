@@ -182,6 +182,7 @@ public class AdminController {
     /**
      * 공시사항 삭제
      */ 
+    @SuppressWarnings("unchecked")
     @RequestMapping(value = "/admin/boardNoticeListDelete", method = {RequestMethod.GET, RequestMethod.POST})
     public String boardNoticeDelete(Locale locale, Model model, HttpServletRequest request, BoardDto dto) {
         
@@ -193,19 +194,33 @@ public class AdminController {
         paramMap.put("list", dto.getListUuid());
         boardService.deleteList(paramMap);
         
-		String msgCode = "";
-		String msgContent = "";
-        msgCode = "SUCCESS";
-        msgContent = "삭제하였습니다.";
+        HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("msgCode", Code.SUCCESS);
+        hm.put("msgContent", messageSource.getMessage("mag_003", null, "default text", locale));
+        
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(new JSONObject(hm));
+        
         JSONObject finalJsonObject1 = new JSONObject();
-        finalJsonObject1.put("msgCode", msgCode);
-        finalJsonObject1.put("msgContent", msgContent);
+        finalJsonObject1.put("msgArray", jsonArray);
         
         String json = finalJsonObject1.toString();
 	    request.setAttribute("data", json);
 		return "comm/json";
         
     }
+    
+
+	/**
+	 * 공지사항추가 화면 
+	 */
+	@RequestMapping(value = "/admin/boardNoticeAddForm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String boardNoticeAddForm(Locale locale, Model model, HttpServletRequest request) {
+		
+	    System.out.println("admin/boardNoticeAddForm");
+		return "admin/boardNoticeAddForm";
+		
+	}
 	@RequestMapping(value = "/admin/message", method = RequestMethod.GET) 
 	public String i18n(Locale locale, HttpServletRequest request, Model model) {
 	    

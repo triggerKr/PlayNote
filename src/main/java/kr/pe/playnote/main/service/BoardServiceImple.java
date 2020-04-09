@@ -80,16 +80,12 @@ public class BoardServiceImple implements BoardService{
 	        hm.put("UUID", uuid);
 	        String sqlId = ".deleteList";
 			String sql = sqlSession.getConfiguration().getMappedStatement(namespace+sqlId).getBoundSql(hm).getSql();
-			 result = sqlSession.delete(namespace+sqlId, hm);
 			System.out.println("==== getNoticeDetail ====");
 		    System.out.println(sql);
+			result = sqlSession.delete(namespace+sqlId, hm);
+			System.out.println("==== result["+result+"] ====");
+			
 	    }
-
-		
-		
-
-
-	    
         return result;
     }
 	@Override
