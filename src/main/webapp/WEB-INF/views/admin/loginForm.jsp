@@ -105,8 +105,6 @@
                          modal.style.display = "block";
                          $("p").text(data.msgContent);
                      }
-                     
-                     s
                   }, 
                   error: function(jqXHR, textStatus, errorThrown) { 
                 	  var modal = document.getElementById("alertModal");

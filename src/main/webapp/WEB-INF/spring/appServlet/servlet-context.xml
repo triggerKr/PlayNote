@@ -67,7 +67,13 @@
     <beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <beans:constructor-arg index="0" ref="sqlSessionFactory"></beans:constructor-arg>
     </beans:bean>
-    
+
+    <!-- MultipartResolver -->
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <beans:property name="maxUploadSize" value="100000000"/>
+        <beans:property name="maxInMemorySize" value="100000000"/>
+    </beans:bean>
+
     <!-- 다국어설정 -->
     <interceptors> 
         <beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"> 

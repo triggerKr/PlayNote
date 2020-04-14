@@ -57,8 +57,8 @@
 	    var uf = '';
 	    function sw_file_add(size, ext)
 	    {
-	        eval('sw_file_add_form' + uf).innerHTML += "<input type=file name=attach_file"+(uf+1)+" id=attach_file"+(uf+1)+" onchange='checkFile(this,"+(uf+1)+")' size='" + size + "' " + ext + ">"
-	                                                +"<div id='sw_file_add_form"+(uf+1)+"'></div>";
+	    	eval('sw_file_add_form' + uf).innerHTML += "<input type=file name=attach_file"+(uf+1)+" id=attach_file"+(uf+1)+" onchange='checkFile(this,"+(uf+1)+")' size='" + size + "' " + ext + ">"
+            +"<div id='sw_file_add_form"+(uf+1)+"'></div>";
 	        uf++;
 	    }
 	    function checkFile(el,index )
@@ -77,7 +77,9 @@
 	    	}
 	    }
 	    
-        function save() {			
+        function saveCheck() {			
+        	
+        	var allowSubmit = false;
         	var title = $("#title").val();
         	var content = $("#content").val();
         	console.log("==== title.length ==>"+title.length);
@@ -87,49 +89,119 @@
         		var modal = document.getElementById("alertModal");
                 modal.style.display = "block";
                 $("p").text("제목을 입력하세요");
-      		    //document.form.title.focus();
+      		    document.form.title.focus();
       		}
         	if( content.length < 1){
         		var modal = document.getElementById("alertModal");
                 modal.style.display = "block";
                 $("p").text("내용을 입력하세요");
-                //document.form.content.focus();
+                document.form.content.focus();
       		}
         	
-        	var file = document.form.attach_file;
-        	console.log("==== file ==>"+file);
-        	if (file){
-        		if(!LimitAttach()){
+        	console.log("==== uf ==>"+uf);
+        	for (var i = 0; i < uf; i++) {
+        		console.log("==== file count ==>"+i);
+
+        		var file = document.getElementById("attach_file"+(i+1));
+        		var fileSize = file.files[0].size;
+        		
+        		if(!LimitAttach(file)){
+        			return;
         		}
-			}
-        	
-        	console.log("==== 체크로직 성공 ==>");
-        	console.log("==== 체크로직 성공 ==>");
+        	}
+        	go_save();
         	
 		}
+
+        function go_save(type){
+             
+             console.log("go_save");
+             var createForm = document.getElementById("form");
+
+             var formData = new FormData(createForm);
+             for (var i = 0; i < uf; i++) {
+         		console.log("==== file count ==>"+i);
+         		var file = document.getElementById("attach_file"+(i+1));
+         		formData.append("files", file);
+         	 }
+
+             $.ajax({
+                 type : "POST", //전송방식을 지정한다 (POST,GET)
+                 processData: false,
+                 contentType: false,
+                 url : "/admin/boardNoticeAddMult",//호출 URL을 설정한다. GET방식일경우 뒤에 파라티터를 붙여서 사용해도된다.
+                 data: formData, 
+                 async: true,
+                 dataType : "json",//호출한 페이지의 형식이다. xml,json,html,text등의 여러 방식을 사용할 수 있다.
+                 success : function(data) { 
+                     console.log("========================================");
+                     console.log("==== data ==>"+data);
+                     console.log("==== data.msgCode ==>"+data.msgCode);
+                     console.log("==== data.msgContent ==>"+data.msgContent);
+                     if( data.msgCode == "SUCCESS"){
+                         success(); 
+                      
+                         var modal = document.getElementById("alertModal");
+                         modal.style.display = "none";
+                     }else{
+                    	
+                    	 var modal = document.getElementById("alertModal");
+                         modal.style.display = "block";
+                         $("p").text(data.msgContent);
+                     }
+                  }, 
+                  error: function(jqXHR, textStatus, errorThrown) { 
+                	  var modal = document.getElementById("alertModal");
+                	  modal.style.display = "block";
+                      $("p").text("ajax  error");
+                      console.log("ajax  error"); 
+                      //alert(jqXHR.responseText); 
+                  }                  
+             });
+        }  
         
-	    extArray = new Array(".gif", ".jpg", ".png",".bmp",".pdf",".xlsx",".doc"); // 업로드 할 수 있는 파일 확장자를 설정 합니다
-		function LimitAttach() {			
-	        
-			var file = document.form.attach_file;
-			
+	    extArray = new Array(".gif", ".jpg", ".png",".bmp",".pdf",".xlsx",".xls",".doc"); // 업로드 할 수 있는 파일 확장자를 설정 합니다
+		function LimitAttach(varFile) {
+			var file = varFile.value;
+		    allowSubmit = false;
+		    if (!file) return;
+		    console.log("==== LimitAttach 1 ==>");
 			while (file.indexOf("\\") != -1)
 			file = file.slice(file.indexOf("\\") + 1);
 			ext = file.slice(file.indexOf(".")).toLowerCase();
-			for (var i = 0; i < extArray.length; i++) {
-			if (extArray[i] == ext) { allowSubmit = true; break; }
-			}
 			
-			if (allowSubmit){
-			    return true;
-			}else{
+			console.log("==== file ==>"+file);
+			console.log("==== ext ==>"+ext);
+			
+			for (var i = 0; i < extArray.length; i++) {
+			  if (extArray[i] == ext) { allowSubmit = true; break; }
+			}
+			console.log("==== allowSubmit ==>"+allowSubmit);
+			if (!allowSubmit){
 			    var modal = document.getElementById("alertModal");
 	            modal.style.display = "block";
 	            $("p").text("업로드 가능한 파일은  "+ (extArray.join("  ")) + "   입니다\n\n다시 선택 해 주세요");
 	            
 				return false;
 			}
+			
+			console.log("==== 3333333 ==>");
+			
+			var fileSize = varFile.files[0].size;
+			// 사이즈체크
+	        var maxSize  = 10 * 1024 * 1024    //10MB
+	        
+	    	// file[0].size 는 파일 용량 정보입니다.
+	    	if(fileSize > maxSize){
+	    		var modal = document.getElementById("alertModal");
+                modal.style.display = "block";
+                $("p").text("파일사이즈 : "+ fileSize +", 최대파일사이즈 : "+maxSize);
+	    		return false;
+	    	}
+	        return true;
 		}
+	    
+		
 
         function close(){
             var modal = document.getElementById("alertModal");
@@ -150,7 +222,7 @@
 		</jsp:include>
         <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
         
-    <form name="form" method="post" enctype="multipart/form-data">
+    <form name="form" id="form" method="post" enctype="multipart/form-data">
         <div class="container-fluid">
           <div class="row">
             <!--/ LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU         -->
@@ -168,11 +240,6 @@
               
               <h2 class="sub-header"><spring:message code="notice" text="default text" /></h2>
               
-              <!-- Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창         block display:none display:block -->
-			  <div id="alertModal"class="alert alert-warning alert-dismissible fade in" style="display:none;">
-			    <a href="javascript:close();" class="close" aria-label="close">&times;</a>
-			    <strong>Warning!</strong><p></p>
-			  </div>
               
             <!--/ ============================================================================================================================================ -->
             <!--/ <div class="container"> -->
@@ -215,9 +282,15 @@
 		          </tbody>
 		        </table>
 		      <div class="btn-group btn-group-sm" role="group" aria-label="...">
-		        <input type="button" class="btn btn-default" onclick="save()" value="<spring:message code="save" text="default text" />" >
+		        <input type="button" class="btn btn-default" onclick="saveCheck()" value="<spring:message code="save" text="default text" />" >
 		        <input type="button" class="btn btn-default" value="<spring:message code="cancel" text="default text" />" onclick="document.location.href='/bbs/content.bbs?articleNumber=articleNumber&pageNum=pageNum'">
 		      </div>
+		      
+              <!-- Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창    Modal 창         block display:none display:block -->
+			  <div id="alertModal"class="alert alert-warning alert-dismissible fade in" style="display:none;">
+			    <a href="javascript:close();" class="close" aria-label="close">&times;</a>
+			    <strong>Warning!</strong><p></p>
+			  </div>
 		    </div> 
             <!--/ ============================================================================================================================================ -->              
             </div>

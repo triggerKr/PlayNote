@@ -26,21 +26,21 @@ public class ComController {
 	private static final Logger logger = LoggerFactory.getLogger(ComController.class);
 	
 	/**
-	 * ∆ƒ¿œ¥ŸøÓ∑ŒµÂ
+	 * Ï≤®Î∂ÄÌååÏùº Îã§Ïö¥Î°úÎìú
 	 */
 	@RequestMapping(value = "/com/downloadFile", method = {RequestMethod.GET, RequestMethod.POST})
 	public void downloadFile(Locale locale, Model model, HttpServletResponse response, HttpServletRequest request) throws Exception{
 		System.out.println("downloadFile");
 		//Map<String,Object> map = commonService.selectFileInfo(commandMap.getMap());
-        String original_File_Name = "test.jpg";//(String)map.get("ORIGINAL_FILE_NAME");
-        String stored_File_Name = "test.jpg";//(String)map.get("STORED_FILE_NAME");
+        String original_File_Name = "1586787418769_20190820_124215.jpg";//(String)map.get("ORIGINAL_FILE_NAME");
+        String stored_File_Name = "1586787418769_20190820_124215.jpg";//(String)map.get("STORED_FILE_NAME");
         
         request.setCharacterEncoding("UTF-8");
-        // ∆ƒ¿œ æ˜∑ŒµÂµ» ∞Ê∑Œ
+        // ÌååÏùºÍ≤ΩÎ°ú
         String root = request.getSession().getServletContext().getRealPath("/");
-        System.out.println("root["+root+"] stored_File_Name["+stored_File_Name+"]");
+        System.out.println("root["+root+Code.PATH_NOTICE+"] stored_File_Name["+stored_File_Name+"]");
         
-        byte[] fileByte = FileUtils.readFileToByteArray(new File(root+Code.downloadPath+stored_File_Name));
+        byte[] fileByte = FileUtils.readFileToByteArray(new File(root+Code.PATH_NOTICE+stored_File_Name));
         
         //FileUtils.readFileToByteArray(arg0)
         

@@ -1,10 +1,12 @@
 package kr.pe.playnote.admin;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,11 +21,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import kr.pe.playnote.com.Code;
+import kr.pe.playnote.com.MultiFiles;
 import kr.pe.playnote.com.PageMaker;
 import kr.pe.playnote.com.ServletUtils;
+import kr.pe.playnote.com.UtilFile;
 import kr.pe.playnote.com.dto.MemberDto;
 import kr.pe.playnote.com.service.MemberService;
 import kr.pe.playnote.main.dto.BoardDto;
@@ -42,6 +49,8 @@ public class AdminController {
     private BoardService boardService;
 	@Autowired
     private MemberService memberService;
+	@Autowired
+	private UtilFile utilFile;
 	
 	// 다국어
 	@Autowired SessionLocaleResolver localeResolver; 
@@ -221,6 +230,89 @@ public class AdminController {
 		return "admin/boardNoticeAddForm";
 		
 	}
+	
+
+	/**
+	 *  공지사항추가
+	 */
+	@RequestMapping(value = "/admin/boardNoticeAdd", method = {RequestMethod.GET, RequestMethod.POST})
+	public String boardNoticeAdd(@RequestParam("attach_file") MultipartFile uploadFile,
+            MultipartHttpServletRequest request,Locale locale) throws Exception{
+//		
+//	    System.out.println("admin/boardNoticeAddForm");
+//	    System.out.println("RewardController reAddProCtrl uploadFile : " + uploadFile);
+//        
+////      파일 업로드 결과값을 path로 받아온다(이미 fileUpload() 메소드에서 해당 경로에 업로드는 끝났음)
+//        String uploadPath = utilFile.fileUpload(request, uploadFile);
+//        
+////      해당 경로만 받아 db에 저장
+//        int n = 1;//rewardService.reAddServ(uploadPath);
+//        
+//        System.out.println("RewardController reAddProCtrl n : " + n);
+//        System.out.println("RewardController reAddProCtrl uploadPath : " + uploadPath);
+//        
+//        //return "redirect:listAll";
+//
+//        HashMap<String, Object> hm = new HashMap<String, Object>();
+//        hm.put("msgCode", Code.SUCCESS);
+//        hm.put("msgContent", messageSource.getMessage("mag_003", null, "default text", locale));
+//        
+//        JSONArray jsonArray = new JSONArray();
+//        jsonArray.add(new JSONObject(hm));
+//        
+//        JSONObject finalJsonObject1 = new JSONObject();
+//        finalJsonObject1.put("msgArray", jsonArray);
+//        
+//        String json = finalJsonObject1.toString();
+//	    request.setAttribute("data", json);
+		return "comm/json";
+		
+		
+	}
+
+	/**
+	 *  공지사항추가
+	 */
+	@RequestMapping(value = "/admin/boardNoticeAddMult", method = {RequestMethod.GET, RequestMethod.POST})
+	public String boardNoticeAddMult(MultiFiles multiFiles,Model model,HttpServletRequest request,Locale locale) throws Exception{
+		
+		System.out.println("=== /admin/boardNoticeAddMult ===>");
+		String root = request.getSession().getServletContext().getRealPath("/");
+		String saveDir = root+Code.PATH_NOTICE;
+		
+		System.out.println("=== saveDir ===>"+saveDir);
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		Set<Map.Entry<String,MultipartFile>> set = multipartRequest.getFileMap().entrySet(); 
+	    Iterator<Map.Entry<String, MultipartFile>> i = set.iterator(); 
+	     
+        while(i.hasNext()) { 
+            Map.Entry<String, MultipartFile> me = (Map.Entry<String, MultipartFile>)i.next(); 
+            String fileName = (String)me.getKey();
+            MultipartFile file = (MultipartFile)me.getValue();
+            logger.info("Original fileName - " + file.getOriginalFilename());
+            logger.info("fileName - " + fileName);
+            utilFile.fileUpload(saveDir, file);
+         }
+		
+		
+        //////////////////////////////////////////////////////////////////////////
+        HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("msgCode", Code.SUCCESS);
+        hm.put("msgContent", messageSource.getMessage("mag_003", null, "default text", locale));
+        
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(new JSONObject(hm));
+        
+        JSONObject finalJsonObject1 = new JSONObject();
+        finalJsonObject1.put("msgArray", jsonArray);
+        
+        String json = finalJsonObject1.toString();
+	    request.setAttribute("data", json);
+		return "comm/json";
+		
+		
+	}
+	
 	@RequestMapping(value = "/admin/message", method = RequestMethod.GET) 
 	public String i18n(Locale locale, HttpServletRequest request, Model model) {
 	    
