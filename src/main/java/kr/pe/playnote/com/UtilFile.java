@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +23,13 @@ public class UtilFile {
     // 프로젝트 내 지정된 경로에 파일을 저장하는 메소드
     // DB에는 업로드된 전체 경로명으로만 지정되기 때문에(업로드한 파일 자체는 경로에 저장됨)
     // fileUpload() 메소드에서 전체 경로를 리턴받아 DB에 경로 그대로 저장   
-    public String fileUpload(String path, MultipartFile uploadFile) {
+    public HashMap<String, String> fileUpload(String path, MultipartFile uploadFile) {
         
         String fileName = "";
+        String newFilename= "";
         OutputStream out = null;
         PrintWriter printWriter = null;
-        
+        HashMap<String, String> map = new HashMap<String, String>();
         try {
             fileName = uploadFile.getOriginalFilename();
             byte[] bytes = uploadFile.getBytes();
@@ -44,7 +46,7 @@ public class UtilFile {
                 	String orgFileExt = getFileExt( fileName );
                 	
                     
-                	String newFilename = orgFileName+"_"+System.currentTimeMillis()+"."+orgFileExt;
+                	newFilename = orgFileName+"_"+System.currentTimeMillis()+"."+orgFileExt;
                     
                 	file = new File( path+newFilename );
                 }
@@ -70,8 +72,12 @@ public class UtilFile {
                 e.printStackTrace();
             }
         }
+
         
-        return path + fileName;
+
+        map.put("newFilename", newFilename);
+        map.put("path", path);
+        return map;
     }
     
     //  업로드 파일 저장 경로 얻는 메소드

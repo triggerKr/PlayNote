@@ -27,7 +27,6 @@
         SELECT @rownum := @rownum+1 AS rnum
               ,UUID             AS  uuid          
               ,BOARD_CODE       AS  boardCode     
-              ,TITLE            AS  title         
               ,USER_ID          AS  userId        
               ,SUBJECT          AS  subject       
               ,CONTENTS         AS  contents      
@@ -49,13 +48,16 @@
           ORDER BY CREATE_DATETIME DESC LIMIT 5
         </if>
     </select>
-    
+    <!-- 공지사항 조회 -->
     <select id="pageListDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+    /* pageListDao*/
         SELECT  BOARD.rnum            AS  rnum          
                ,BOARD.uuid            AS  uuid          
                ,BOARD.boardCode       AS  boardCode     
-               ,BOARD.title           AS  title         
-               ,BOARD.userId          AS  userId        
+               ,BOARD.userId          AS  userId 
+               ,BOARD.userName        AS  userName   
+               ,BOARD.email           AS  email   
+               ,BOARD.nickName        AS  nickName       
                ,BOARD.subject         AS  subject       
                ,BOARD.contents        AS  contents      
                ,BOARD.hits            AS  hits          
@@ -65,18 +67,23 @@
                ,BOARD.updateUser      AS  updateUser
         FROM(
            SELECT  @rownum := @rownum+1 AS rnum
-                  ,UUID             AS  uuid          
-                  ,BOARD_CODE       AS  boardCode     
-                  ,TITLE            AS  title         
-                  ,USER_ID          AS  userId        
-                  ,SUBJECT          AS  subject       
-                  ,CONTENTS         AS  contents      
-                  ,HITS             AS  hits          
-                  ,CREATE_DATETIME  AS  createDatetime
-                  ,CREATE_USER      AS  createUser
-                  ,UPDATE_DATETIME  AS  updateDatetime
-                  ,UPDATE_USER      AS  updateUser 
-           FROM    BOARD 
+                  ,BOARD.UUID             AS  uuid          
+                  ,BOARD.BOARD_CODE       AS  boardCode     
+                  ,BOARD.USER_ID          AS  userId     
+                  ,MEMBER.USERNAME        AS  userName  
+                  ,MEMBER.EMAIL           AS  email  
+                  ,MEMBER.NICKNAME        AS  nickName  
+                  ,BOARD.SUBJECT          AS  subject       
+                  ,BOARD.CONTENTS         AS  contents      
+                  ,BOARD.HITS             AS  hits          
+                  ,BOARD.CREATE_DATETIME  AS  createDatetime
+                  ,BOARD.CREATE_USER      AS  createUser
+                  ,BOARD.UPDATE_DATETIME  AS  updateDatetime
+                  ,BOARD.UPDATE_USER      AS  updateUser 
+           FROM    BOARD
+                   LEFT OUTER JOIN MEMBER 
+                       ON  1 = 1
+                       AND BOARD.USER_ID = MEMBER.UUID
                   ,(SELECT @rownum := 0) AS R
            WHERE  1 = 1
            <if test='BOARD_CODE != null'>
@@ -99,7 +106,6 @@
     <select id="noticeDetail" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
            SELECT  UUID             AS  uuid          
                   ,BOARD_CODE       AS  boardCode     
-                  ,TITLE            AS  title         
                   ,USER_ID          AS  userId        
                   ,SUBJECT          AS  subject       
                   ,CONTENTS         AS  contents      
@@ -113,37 +119,64 @@
            AND    UUID = #{UUID}
     </select>
  
-     <!-- 주석 내용
-     <mapper namespace="playnote.main.dao.IBoardDao">
-    <select id="listDao" resultType="playnote.main.dto.BoardDto">
-        SELECT   1        AS hits
-                ,EMAIL    AS userId
-                ,PASSWORD AS subject
-                ,USERNAME AS hits
-                ,NICKNAME AS createDatetime
-        FROM   MEMBER
-        WHERE  1 = 1        
-    </select>
-    <select id="listDao" resultType="playnote.main.dto.BoardDto">
-        SELECT UUID             AS  uuid,          
-               BOARD_CODE       AS  boardCode,     
-               TITLE            AS  title,         
-               USER_ID          AS  userId,        
-               SUBJECT          AS  subject,       
-               CONTENTS         AS  contents,      
-               HITS             AS  hits,          
-               CREATE_DATETIME  AS  createDatetime,
-               CREATE_USER      AS  createUser,
-               UPDATE_DATETIME  AS  updateDatetime,
-               UPDATE_USER      AS  updateUser
-        FROM   BOARD
-        WHERE  1 = 1        
-    </select>
-     -->
-    
-    <insert id="writeDao">
-        
+    <!-- 첨부파일 입력 -->
+    <insert id="insertAttachFile" parameterType="java.util.HashMap">
+		/* insertAttachFile */
+		INSERT INTO ATTACH_FILE (
+		         UUID            
+		        ,BOARD_UUID      
+		        ,ORG_FILE_NAME   
+		        ,STORED_FILE_NAME
+		        ,FILE_DIRECTORY  
+		        ,FILE_SIZE       
+		        ,CREATE_DATETIME 
+		        ,CREATE_USER     
+		        ,UPDATE_DATETIME 
+		        ,UPDATE_USER     
+		) 
+		VALUES(
+		         #{ATTACH_FILE.uuid}           
+		        ,#{ATTACH_FILE.boardUuid}
+		        ,#{ATTACH_FILE.orgFileName}
+		        ,#{ATTACH_FILE.storedFileName}
+		        ,#{ATTACH_FILE.fileDirectory}
+		        ,#{ATTACH_FILE.fileSize}
+		        ,#{ATTACH_FILE.createDatetime}
+		        ,#{ATTACH_FILE.createUser}
+		        ,#{ATTACH_FILE.updateDatetime}
+		        ,#{ATTACH_FILE.updateUser}
+		)
     </insert>
+    
+     <!-- 게시판 입력 -->
+    <insert id="insertBoard" parameterType="java.util.HashMap">
+        /* insertAttachFile */
+        INSERT INTO BOARD (
+             UUID            
+            ,BOARD_CODE      
+            ,USER_ID         
+            ,SUBJECT         
+            ,CONTENTS        
+            ,HITS            
+            ,CREATE_DATETIME 
+            ,CREATE_USER     
+            ,UPDATE_DATETIME 
+            ,UPDATE_USER     
+        ) 
+        VALUES(
+             #{BOARD.uuid}           
+            ,#{BOARD.boardCode}
+            ,#{BOARD.userId}
+            ,#{BOARD.subject}
+            ,#{BOARD.contents}
+            ,#{BOARD.hits}
+            ,#{BOARD.createDatetime}
+            ,#{BOARD.createUser}
+            ,#{BOARD.updateDatetime}
+            ,#{BOARD.updateUser}
+        )
+    </insert>
+    
     
     
     

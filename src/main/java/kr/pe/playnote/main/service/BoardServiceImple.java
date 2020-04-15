@@ -4,13 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.pe.playnote.admin.AdminController;
+import kr.pe.playnote.com.dto.AttachFileDto;
 import kr.pe.playnote.main.dto.BoardDto;
 
 @Service
 public class BoardServiceImple implements BoardService{
+	
+	private static final Logger logger = LoggerFactory.getLogger(BoardServiceImple.class);
 	
 	@Autowired
 	private SqlSession sqlSession;
@@ -88,6 +94,30 @@ public class BoardServiceImple implements BoardService{
 	    }
         return result;
     }
+	
+	@Override
+    public int insertAttachFile(HashMap<String, AttachFileDto> paramMap) {
+
+		String sqlId = ".insertAttachFile";
+		int result = 0;
+		String sql = sqlSession.getConfiguration().getMappedStatement(namespace+sqlId).getBoundSql(paramMap).getSql();
+		logger.info("insertAttachFilee - " + sql);
+		result = sqlSession.insert(namespace+sqlId, paramMap);
+        return result;
+    }
+
+
+	@Override
+    public int insertBoard(HashMap<String, BoardDto> paramMap) {
+
+		String sqlId = ".insertBoard";
+		int result = 0;
+		String sql = sqlSession.getConfiguration().getMappedStatement(namespace+sqlId).getBoundSql(paramMap).getSql();
+		logger.info("insertBoard - " + sql);
+		result = sqlSession.insert(namespace+sqlId, paramMap);
+        return result;
+    }
+	
 	@Override
     public List<BoardDto> getBoardListTest() {
 		

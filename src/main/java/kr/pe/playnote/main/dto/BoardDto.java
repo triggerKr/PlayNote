@@ -1,19 +1,46 @@
 package kr.pe.playnote.main.dto;
 
+import java.util.Date;
 import java.util.List;
 
 public class BoardDto {
 
     private String uuid;            
     private String boardCode;       
-    private String title;           
-    private String userId;          
+    private String userId; 
+    private String userName; 
+    private String email; 
+    private String nickName; 
     private String subject;         
     private String contents;        
     private int    hits;            
-    private String createDatetime;  
-    private String createUser;      
-    private String updateDatetime;  
+    private Date   createDatetime;  
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	private String createUser;      
+    private Date   updateDatetime;  
     private String updateUser;
     private int rnum;
     private int    totalCount;
@@ -26,12 +53,11 @@ public class BoardDto {
 	public BoardDto(String uuid,String boardCode,
             String title,String userId,
             String subject,String contents,
-            int    hits,String createDatetime,
-            String createUser,String updateDatetime,
+            int    hits,Date createDatetime,
+            String createUser,Date updateDatetime,
             String updateUser) {
 		this.uuid = uuid;          
-		this.boardCode =boardCode;     
-		this.title = title;         
+		this.boardCode =boardCode;  
 		this.userId = userId;        
 		this.subject = subject;       
 		this.contents = contents;      
@@ -57,14 +83,6 @@ public class BoardDto {
 
 	public void setBoardCode(String boardCode) {
 		this.boardCode = boardCode;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getUserId() {
@@ -99,11 +117,11 @@ public class BoardDto {
 		this.hits = hits;
 	}
 
-	public String getCreateDatetime() {
+	public Date getCreateDatetime() {
 		return createDatetime;
 	}
 
-	public void setCreateDatetime(String createDatetime) {
+	public void setCreateDatetime(Date createDatetime) {
 		this.createDatetime = createDatetime;
 	}
 
@@ -115,11 +133,11 @@ public class BoardDto {
 		this.createUser = createUser;
 	}
 
-	public String getUpdateDatetime() {
+	public Date getUpdateDatetime() {
 		return updateDatetime;
 	}
 
-	public void setUpdateDatetime(String updateDatetime) {
+	public void setUpdateDatetime(Date updateDatetime) {
 		this.updateDatetime = updateDatetime;
 	}
 

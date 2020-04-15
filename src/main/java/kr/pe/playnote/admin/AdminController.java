@@ -1,12 +1,14 @@
 package kr.pe.playnote.admin;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,6 +33,7 @@ import kr.pe.playnote.com.MultiFiles;
 import kr.pe.playnote.com.PageMaker;
 import kr.pe.playnote.com.ServletUtils;
 import kr.pe.playnote.com.UtilFile;
+import kr.pe.playnote.com.dto.AttachFileDto;
 import kr.pe.playnote.com.dto.MemberDto;
 import kr.pe.playnote.com.service.MemberService;
 import kr.pe.playnote.main.dto.BoardDto;
@@ -104,7 +107,6 @@ public class AdminController {
 			msgContent = messageSource.getMessage("mag_002", null, "default text", locale);
 		}
 		
-		HashMap<String, Object> myHashMap1 = new HashMap<String, Object>();
         JSONObject jsonObject1 = new JSONObject(); // 중괄호에 들어갈 속성 정의 { "a" : "1", "b" : "2" }
         JSONArray jsonArray1 = new JSONArray(); // 대괄호 정의 [{ "a" : "1", "b" : "2" }]
         JSONObject finalJsonObject1 = new JSONObject(); // 중괄호로 감싸 대괄호의 이름을 정의함 { "c" : [{  "a" : "1", "b" : "2" }] }
@@ -273,43 +275,87 @@ public class AdminController {
 	/**
 	 *  공지사항추가
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/admin/boardNoticeAddMult", method = {RequestMethod.GET, RequestMethod.POST})
 	public String boardNoticeAddMult(MultiFiles multiFiles,Model model,HttpServletRequest request,Locale locale) throws Exception{
 		
-		System.out.println("=== /admin/boardNoticeAddMult ===>");
+		logger.info("=== /admin/boardNoticeAddMult ===>");
+
+        String userUuid = request.getParameter("userUuid");
+        String subject = request.getParameter("subject");
+        String content = request.getParameter("content");
+        
 		String root = request.getSession().getServletContext().getRealPath("/");
 		String saveDir = root+Code.PATH_NOTICE;
 		
-		System.out.println("=== saveDir ===>"+saveDir);
+		logger.info("=== saveDir ===>"+saveDir);
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		Set<Map.Entry<String,MultipartFile>> set = multipartRequest.getFileMap().entrySet(); 
 	    Iterator<Map.Entry<String, MultipartFile>> i = set.iterator(); 
-	     
+	    String boardUuid =  UUID.randomUUID().toString();
+        
+        Date today = new Date ();
+        
         while(i.hasNext()) { 
             Map.Entry<String, MultipartFile> me = (Map.Entry<String, MultipartFile>)i.next(); 
             String fileName = (String)me.getKey();
             MultipartFile file = (MultipartFile)me.getValue();
             logger.info("Original fileName - " + file.getOriginalFilename());
             logger.info("fileName - " + fileName);
-            utilFile.fileUpload(saveDir, file);
+            
+            HashMap<String, String> map = utilFile.fileUpload(saveDir, file);
+            
+            String attachFileUuid =  UUID.randomUUID().toString();
+            AttachFileDto attachFileDto = new AttachFileDto();
+            attachFileDto.setUuid(attachFileUuid);          
+            attachFileDto.setBoardUuid(boardUuid);     
+            attachFileDto.setOrgFileName(file.getOriginalFilename());   
+            attachFileDto.setStoredFileName(map.get("newFilename"));
+            attachFileDto.setFileDirectory(map.get("path")); 
+            attachFileDto.setFileSize(1);      
+            attachFileDto.setCreateDatetime(today);
+            attachFileDto.setCreateUser(userUuid);    
+            attachFileDto.setUpdateDatetime(today);
+            attachFileDto.setUpdateUser(userUuid); 
+            
+            HashMap<String, AttachFileDto> paramMap =  new HashMap<String, AttachFileDto>();
+    		paramMap.put("ATTACH_FILE", attachFileDto);
+    		
+    		int result = boardService.insertAttachFile(paramMap);
+    		logger.info("result - " + result);
          }
 		
-		
+
+        BoardDto boardDto = new BoardDto();
+        boardDto.setUuid(boardUuid);
+        boardDto.setBoardCode(Code.BOARD_NOTICE);
+        boardDto.setUserId(userUuid);
+        boardDto.setSubject(subject);
+        boardDto.setContents(content);
+        boardDto.setCreateDatetime(today);
+        boardDto.setCreateUser(userUuid);
+        boardDto.setUpdateDatetime(today);
+        boardDto.setUpdateUser(userUuid);
+
+        
+        
+        HashMap<String, BoardDto> paramMap =  new HashMap<String, BoardDto>();
+        paramMap.put("BOARD", boardDto);
+        int result = boardService.insertBoard(paramMap);
+        logger.info("result - " + result);
+        
         //////////////////////////////////////////////////////////////////////////
-        HashMap<String, Object> hm = new HashMap<String, Object>();
-        hm.put("msgCode", Code.SUCCESS);
-        hm.put("msgContent", messageSource.getMessage("mag_003", null, "default text", locale));
-        
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(new JSONObject(hm));
-        
+
         JSONObject finalJsonObject1 = new JSONObject();
-        finalJsonObject1.put("msgArray", jsonArray);
+        finalJsonObject1.put("msgCode", Code.SUCCESS);
+        finalJsonObject1.put("msgContent",  messageSource.getMessage("mag_003", null, "default text", locale));
         
+        System.out.println(finalJsonObject1);
         String json = finalJsonObject1.toString();
+
+        System.out.println(json);
 	    request.setAttribute("data", json);
 		return "comm/json";
-		
 		
 	}
 	

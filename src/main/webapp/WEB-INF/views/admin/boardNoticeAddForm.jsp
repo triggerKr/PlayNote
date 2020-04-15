@@ -22,7 +22,7 @@
 <c:set  var="language"  value="<%=language %>" scope="page" />
 <c:set  var="username"  value="<%=username %>" scope="page" />
 <c:set  var="email"  value="<%=email %>" scope="page" />
-
+<c:set  var="userUuid"  value="<%=uuid %>" scope="page" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,16 +80,16 @@
         function saveCheck() {			
         	
         	var allowSubmit = false;
-        	var title = $("#title").val();
+        	var subject = $("#subject").val();
         	var content = $("#content").val();
-        	console.log("==== title.length ==>"+title.length);
+        	console.log("==== subject.length ==>"+subject.length);
         	console.log("==== content.length ==>"+content.length);
         	/**/
-        	if( title.length < 1){
+        	if( subject.length < 1){
         		var modal = document.getElementById("alertModal");
                 modal.style.display = "block";
                 $("p").text("제목을 입력하세요");
-      		    document.form.title.focus();
+      		    document.form.subject.focus();
       		}
         	if( content.length < 1){
         		var modal = document.getElementById("alertModal");
@@ -139,10 +139,9 @@
                      console.log("==== data.msgCode ==>"+data.msgCode);
                      console.log("==== data.msgContent ==>"+data.msgContent);
                      if( data.msgCode == "SUCCESS"){
-                         success(); 
-                      
                          var modal = document.getElementById("alertModal");
                          modal.style.display = "none";
+                         success();
                      }else{
                     	
                     	 var modal = document.getElementById("alertModal");
@@ -213,7 +212,12 @@
 	        modal.style.display = "block";
 	        $("p").text(mag);
         }
-        
+
+        function success(){
+        document.form.action  = "/admin/noticeList";                                             
+        document.form.method = "POST";
+        document.form.submit();
+        }  
     </script>
   <body>
         <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
@@ -223,6 +227,8 @@
         <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
         
     <form name="form" id="form" method="post" enctype="multipart/form-data">
+      <input type="hidden" id="userUuid" name="userUuid" value="<c:out value="${userUuid}" />">
+      
         <div class="container-fluid">
           <div class="row">
             <!--/ LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU         -->
@@ -260,7 +266,7 @@
 		            </tr>
 		            <tr>
 		              <th style="padding-top: 15px"><spring:message code="title" text="default text" /></th>
-		              <td colspan="5"><input type="text" name="title" id="title" value="article.title"
+		              <td colspan="5"><input type="text" name=subject id="subject" value=""
 		                    class="form-control" aria-describedby="basic-addon1"></td>
 		                    
 		            </tr>
