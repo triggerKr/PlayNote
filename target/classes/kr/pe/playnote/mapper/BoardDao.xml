@@ -7,6 +7,7 @@
     
     
     <delete id="deleteList_BACK" parameterType="java.util.HashMap">
+        /* kr.pe.playnote.main.dao.IBoardDao.deleteList_BACK */
 		DELETE FROM BOARD
 		WHERE 1 = 1
 		AND  UUID IN
@@ -18,12 +19,14 @@
     </delete>
     
     <delete id="deleteList" parameterType="java.util.HashMap">
+        /* kr.pe.playnote.main.dao.IBoardDao.deleteList */
 		DELETE FROM BOARD
 		WHERE 1 = 1
 		AND  UUID = #{UUID}
     </delete>
     
     <select id="listDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+        /* kr.pe.playnote.main.dao.IBoardDao.listDao */
         SELECT @rownum := @rownum+1 AS rnum
               ,UUID             AS  uuid          
               ,BOARD_CODE       AS  boardCode     
@@ -50,7 +53,7 @@
     </select>
     <!-- 공지사항 조회 -->
     <select id="pageListDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
-    /* pageListDao*/
+        /* kr.pe.playnote.main.dao.IBoardDao.pageListDao */
         SELECT  BOARD.rnum            AS  rnum          
                ,BOARD.uuid            AS  uuid          
                ,BOARD.boardCode       AS  boardCode     
@@ -87,14 +90,15 @@
                   ,(SELECT @rownum := 0) AS R
            WHERE  1 = 1
            <if test='BOARD_CODE != null'>
-               AND BOARD_CODE = #{BOARD_CODE}
+               AND BOARD.BOARD_CODE = #{BOARD_CODE}
            </if>
-           ORDER BY CREATE_DATETIME DESC
+           ORDER BY BOARD.CREATE_DATETIME DESC
         ) BOARD
         LIMIT #{PAGE_NUM}, #{PAGE_LIMIT}
     </select>
     
     <select id="totalCountDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+           /* kr.pe.playnote.main.dao.IBoardDao.totalCountDao */
            SELECT COUNT(*) AS totalCount
            FROM   BOARD 
            WHERE  1 = 1
@@ -104,6 +108,7 @@
     </select>
     
     <select id="noticeDetail" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+           /* kr.pe.playnote.main.dao.IBoardDao.noticeDetail */
            SELECT  UUID             AS  uuid          
                   ,BOARD_CODE       AS  boardCode     
                   ,USER_ID          AS  userId        
@@ -121,7 +126,7 @@
  
     <!-- 첨부파일 입력 -->
     <insert id="insertAttachFile" parameterType="java.util.HashMap">
-		/* insertAttachFile */
+        /* kr.pe.playnote.main.dao.IBoardDao.insertAttachFile */
 		INSERT INTO ATTACH_FILE (
 		         UUID            
 		        ,BOARD_UUID      
@@ -150,7 +155,7 @@
     
      <!-- 게시판 입력 -->
     <insert id="insertBoard" parameterType="java.util.HashMap">
-        /* insertAttachFile */
+        /* kr.pe.playnote.main.dao.IBoardDao.insertBoard */
         INSERT INTO BOARD (
              UUID            
             ,BOARD_CODE      

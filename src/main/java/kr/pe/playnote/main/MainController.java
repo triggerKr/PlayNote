@@ -33,17 +33,17 @@ public class MainController {
 	
 	@Autowired
     private BoardService boardService;
-    // ´Ù±¹¾î
+    // ï¿½Ù±ï¿½ï¿½ï¿½
     @Autowired SessionLocaleResolver localeResolver; 
     @Autowired MessageSource messageSource;
 	
 	/**
-	 * ¸ÞÀÎÈ­¸é
+	 * ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½
 	 */
 	@RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String home(Locale locale, Model model,HttpServletRequest request) {
 	    
-	    logger.info("home locale.toString {}.", locale.toString()); // localeResolver ·ÎºÎÅÍ Locale À» Ãâ·ÂÇØ º¾´Ï´Ù.
+	    logger.info("home locale.toString {}.", locale.toString()); // localeResolver ï¿½Îºï¿½ï¿½ï¿½ Locale ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.
 	    HttpSession session = request.getSession();
 	    String language = locale.getLanguage();
 	    
@@ -64,26 +64,26 @@ public class MainController {
 	}
 
 	
-	/**
-     * ¾ð¾îº¯°æ
+	/** 
+     * ï¿½ï¿½îº¯ï¿½ï¿½
      */
     @RequestMapping(value = "/main/messageChange", method = {RequestMethod.GET, RequestMethod.POST})
     public String messageChange(Locale locale, Model model,HttpServletRequest request) {
         
-        // RequestMapingHandler·Î ºÎÅÍ ¹ÞÀº Locale °´Ã¼¸¦ Ãâ·ÂÇØ º¾´Ï´Ù. 
-        logger.info("Welcome i18n! The client locale is {}.", locale); // localeResolver ·ÎºÎÅÍ Locale À» Ãâ·ÂÇØ º¾´Ï´Ù. 
-        logger.info("locale.toString {}.", locale.toString()); // localeResolver ·ÎºÎÅÍ Locale À» Ãâ·ÂÇØ º¾´Ï´Ù.
+        // RequestMapingHandlerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Locale ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½. 
+        logger.info("Welcome i18n! The client locale is {}.", locale); // localeResolver ï¿½Îºï¿½ï¿½ï¿½ Locale ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½. 
+        logger.info("locale.toString {}.", locale.toString()); // localeResolver ï¿½Îºï¿½ï¿½ï¿½ Locale ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.
         logger.info("Session locale is {}.", localeResolver.resolveLocale(request));
         logger.info("site.title : {}", messageSource.getMessage("site.title", null, "default text", locale));
-        logger.info("site.count : {}", messageSource.getMessage("site.count", new String[] {"Ã¹¹øÂ°"}, "default text", locale));
-        logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale)); //logger.info("not.exist ±âº»°ª ¾øÀ½ : {}", messageSource.getMessage("not.exist", null, locale)); 
-        // JSP ÆäÀÌÁö¿¡¼­ EL À» »ç¿ëÇØ¼­ arguments ¸¦ ³ÖÀ» ¼ö ÀÖµµ·Ï °ªÀ» º¸³½´Ù. 
+        logger.info("site.count : {}", messageSource.getMessage("site.count", new String[] {"Ã¹ï¿½ï¿½Â°"}, "default text", locale));
+        logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale)); //logger.info("not.exist ï¿½âº»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {}", messageSource.getMessage("not.exist", null, locale)); 
+        // JSP ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ EL ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ arguments ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. 
         model.addAttribute("siteCount", messageSource.getMessage("msg.first", null, locale)); 
         return "redirect:/";
 
     }
 	/**
-	 * °øÁö»çÇ×
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	@RequestMapping(value = "/main/boardNotice", method = {RequestMethod.GET, RequestMethod.POST})
 	public String boardNotice(Locale locale, Model model,HttpServletRequest request) {
@@ -108,17 +108,17 @@ public class MainController {
         
         if (request.getParameter("pagenum") != null)
         	cpagenum = Integer.parseInt(request.getParameter("pagenum"));
-                /*---------ÆäÀÌÁö °´Ã¼¿¡ »õ·Î¿î Á¤º¸ ´Ù½Ã ÁöÁ¤ÇØÁÖ´Â ºÎºÐ------------------*/
-        pagemaker.setTotalcount(totalCount);//ÀüÃ¼ °Ô½Ã±Û °³¼ö ÁöÁ¤ÇÑ´Ù
-        pagemaker.setPagenum(cpagenum-1);//ÇöÀç ÆäÀÌÁö¸¦ ÆäÀÌÁö °´Ã¼¿¡ ´Ù½Ã ÁöÁ¤ÇØÁØ´Ù//¸î¹ø ÆäÀÌÁöÀÎÁö PageMaker¿¡ ¼¼ÆÃÇÑ´Ù
-        pagemaker.setContentnum(Code.PAGE_LIMIT_10);//ÇÑ ÆäÀÌÁö¿¡ ¸î°³¾¿ º¸¿©ÁÙÁö ¼¼ÆÃÇÑ´Ù
-        pagemaker.setCurrentblock(cpagenum);//ÇöÀç ÆäÀÌÁöºí·ÏÀÌ ¸î¹øÀÎÁö ÇöÀç ÆäÀÌÁö ¹øÈ£¸¦ ÅëÇØ¼­ ÁöÁ¤ÇÑ´Ù
-        pagemaker.setLastblock(pagemaker.getTotalcount());//¸¶Áö¸· ºí·Ï ¹øÈ£¸¦ ÀüÃ¼ °Ô½Ã±Û ¼ö¸¦ ÅëÇØ¼­ Á¤ÇÑ´Ù
-        /*---------ÆäÀÌÁö °´Ã¼¿¡ »õ·Î¿î Á¤º¸ ´Ù½Ã ÁöÁ¤ÇØÁÖ´Â ºÎºÐ------------------*/
-        pagemaker.prevnext(cpagenum);//ÇöÀç ÆäÀÌÁö ¹øÈ£·Î È­»ìÇ¥ ³ªÅ¸³¾Áö °áÁ¤ÇÑ´Ù
-        pagemaker.setStartPage(pagemaker.getCurrentblock());//½ÃÀÛÆäÀÌÁö ¹øÈ£¸¦ ÇöÀç ÆäÀÌÁö ºí·ÏÀ¸·Î Á¤ÇÑ´Ù
+                /*---------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Îºï¿½------------------*/
+        pagemaker.setTotalcount(totalCount);//ï¿½ï¿½Ã¼ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+        pagemaker.setPagenum(cpagenum-1);//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PageMakerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+        pagemaker.setContentnum(Code.PAGE_LIMIT_10);//ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î°³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+        pagemaker.setCurrentblock(cpagenum);//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+        pagemaker.setLastblock(pagemaker.getTotalcount());//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½
+        /*---------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Îºï¿½------------------*/
+        pagemaker.prevnext(cpagenum);//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ È­ï¿½ï¿½Ç¥ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+        pagemaker.setStartPage(pagemaker.getCurrentblock());//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½
         pagemaker.setEndPage(pagemaker.getLastblock(),pagemaker.getCurrentblock());
-        //ÇöÀç ºí·Ï ¹øÈ£¿Í ¸¶Áö¸· ºí·Ï ¹øÈ£¸¦ º¸³»¼­ ´ëÁ¶ÇÏ°í ÆäÀÌÁö ºí·ÏÀÇ ¸¶Áö¸· ¹øÈ£¸¦ ÁöÁ¤ÇÑ´Ù
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
         
 		
 		paramMap.put("PAGE_NUM", pagemaker.getPagenum()*10);
@@ -130,13 +130,13 @@ public class MainController {
 		List<BoardDto> boardList = boardService.getPageList(paramMap);
 		
         model.addAttribute("noticeList", boardList);
-        model.addAttribute("page", pagemaker);//ÆäÀÌÁö ¹øÈ£ °´Ã¼ .jspÆäÀÌÁö·Î Àü´Þ
+        model.addAttribute("page", pagemaker);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ ï¿½ï¿½Ã¼ .jspï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		return "main/boardNotice";
 		
 	}
 	
 	/**
-	 * °øÁö»çÇ× »ó¼¼
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	 *  /main/boardNoticeDetail?uuid="+uuid;
 	 */
 	@RequestMapping(value = "/main/boardNoticeDetail", method = {RequestMethod.GET, RequestMethod.POST})
@@ -156,7 +156,7 @@ public class MainController {
 	}
 	
 	/**
-	 * °Ô½ÃÆÇ 
+	 * ï¿½Ô½ï¿½ï¿½ï¿½ 
 	 */
 	@RequestMapping(value = "/main/boardUser", method = {RequestMethod.GET, RequestMethod.POST})
 	public String boardUser(Locale locale, Model model) {

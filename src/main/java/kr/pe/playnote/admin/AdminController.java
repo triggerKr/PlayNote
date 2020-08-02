@@ -285,6 +285,7 @@ public class AdminController {
         String subject = request.getParameter("subject");
         String content = request.getParameter("content");
         
+        
 		String root = request.getSession().getServletContext().getRealPath("/");
 		String saveDir = root+Code.PATH_NOTICE;
 		

@@ -28,7 +28,10 @@
                 case "ADMIN_NOTICE_LIST" :
                     url = "/admin/noticeList";
                     break;
-                    
+                case "WEB_FRAME_VUE_MAIN" :
+                	alert("WEB_FRAME_VUE_MAIN");
+                    url = "/webFrame/vueMain";
+                    break;
                 default :
                     url = "/";
             } 
@@ -83,6 +86,16 @@
             <li><a href="#">Android</a></li>
             <li><a href="#">C#</a></li>
             <li><a href="#">Project</a></li>
+            
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">WEB FRAME<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:topMenuGo('WEB_FRAME_VUE_MAIN');">Vue</a></li>
+                <li><a href="#">React</a></li>
+              </ul>
+            </li>
+			
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">ADMIN <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">

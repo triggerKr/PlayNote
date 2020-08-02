@@ -104,7 +104,7 @@
 	                <c:forEach items="${noticeList}" var="dto">
 						<tr>
 							<td>${dto.rnum}</td>
-							<td>${dto.userId}</td>
+							<td>${dto.nickName}</td>
 							<td>${dto.subject}</td>
 							<td>${dto.hits}</td>
 							<td>${dto.createDatetime}</td>
