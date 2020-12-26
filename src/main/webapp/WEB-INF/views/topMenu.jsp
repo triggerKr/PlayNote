@@ -32,6 +32,11 @@
                 	alert("WEB_FRAME_VUE_MAIN");
                     url = "/webFrame/vueMain";
                     break;
+                case "JAVA_BASE_MAIN" :
+                	alert("JAVA_BASE_MAIN");
+                    url = "/java/base?page=page_001";
+                    break;    
+                    
                 default :
                     url = "/";
             } 
@@ -78,7 +83,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">JAVA <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">BASE</a></li>
+                <li><a href="javascript:topMenuGo('JAVA_BASE_MAIN');">BASE</a></li>
                 <li><a href="#">GUI</a></li>
                 <li><a href="#">JSP</a></li>
               </ul>

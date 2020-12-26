@@ -34,7 +34,7 @@ public class BaseController {
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "/java/base/page_001";
+		return "/java/base/"+page;
 	}
 	
 }
