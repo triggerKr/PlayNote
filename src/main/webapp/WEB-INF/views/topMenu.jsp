@@ -14,7 +14,7 @@
         function topMenuGo(url){
             switch (url){
                 case "HOME" :
-                    url = "/";
+                    url = "/home/index";
                     break;
                 case "BOARD_NOTICE" :
                     url = "/main/boardNotice?pagenum=1&contentnum=0";
@@ -40,6 +40,7 @@
                 default :
                     url = "/";
             } 
+            alert(url);
             document.form.action  = url;                                                   
             document.form.method = "POST";
             document.form.submit();

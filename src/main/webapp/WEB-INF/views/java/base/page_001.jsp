@@ -1,6 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page session="true" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="kr.pe.playnote.com.dto.MemberDto" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%
+    String language = (String)session.getAttribute("language");
+    MemberDto sessionInfo = (MemberDto)session.getAttribute("SESSION_INFO");
+    
+    String uuid = "";
+    if( sessionInfo != null){ uuid = (String)sessionInfo.getUuid();}
+    
+%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,76 +40,20 @@
   </head>
 
   <body>
-
-    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
-	    <nav class="navbar navbar-inverse navbar-fixed-top">
-	      <div class="container-fluid">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a class="navbar-brand" href="#">Play Note</a>
-	        </div>
-	        <div id="navbar" class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="#">Home</a></li>
-	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">JAVA<span class="caret"></span></a>
-	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="javascript:go_it('javaBase');">BASE</a></li>
-	                <li><a href="#">GUI</a></li>
-	                <li><a href="#">JSP</a></li>
-	              </ul>
-	            </li>
-	            <li><a href="#about">Android</a></li>
-	            <li><a href="#about">C#</a></li>
-	            <li><a href="#about">Project</a></li>
-	            <li><a href="#about">Tool</a></li>
-	            <li><a href="#contact">Contact</a></li>
-	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="#">Action</a></li>
-	                <li><a href="#">Another action</a></li>
-	                <li><a href="#">Something else here</a></li>
-	                <li class="divider"></li>
-	                <li class="dropdown-header">Nav header</li>
-	                <li><a href="#">Separated link</a></li>
-	                <li><a href="#">One more separated link</a></li>
-	              </ul>
-	            </li>
-	          </ul>
-	        </div><!--/.nav-collapse -->
-	      </div>
-	    </nav>
+    <form name="form" method="post">
+        <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
+	    <jsp:include page="../../topMenu.jsp" flush="true">
+		     <jsp:param name="language" value="<%= language %>"/>
+		</jsp:include>
 	    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
+	    
 	
 	    <div class="container-fluid">
 	      <div class="row">
 	        <!--/ LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU         -->
-	        <div class="col-sm-3 col-md-2 sidebar">
-	          <ul class="nav nav-sidebar">
-	            <li class="active"><a href="#">jdk 설치 <span class="sr-only">(current)</span></a></li>
-	            <li><a href="#">Reports</a></li>
-	            <li><a href="#">Analytics</a></li>
-	            <li><a href="#">Export</a></li>
-	          </ul>
-	          <ul class="nav nav-sidebar">
-	            <li><a href="">Nav item</a></li>
-	            <li><a href="">Nav item again</a></li>
-	            <li><a href="">One more nav</a></li>
-	            <li><a href="">Another nav item</a></li>
-	            <li><a href="">More navigation</a></li>
-	          </ul>
-	          <ul class="nav nav-sidebar">
-	            <li><a href="">Nav item again</a></li>
-	            <li><a href="">One more nav</a></li>
-	            <li><a href="">Another nav item</a></li>
-	          </ul>
-	        </div>
+	        <jsp:include page="leftMenu.jsp" flush="true">
+	            <jsp:param name="language" value="<%= language %>"/>
+		    </jsp:include>
 	        <!--/ LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU         -->
 	        
 	        
@@ -149,7 +105,7 @@
 		    <!--/ FOOTER     FOOTER     FOOTER     FOOTER     FOOTER     FOOTER     FOOTER     FOOTER     FOOTER     FOOTER     FOOTER               -->
 	      </div>
 	    </div>
-
+    </form>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

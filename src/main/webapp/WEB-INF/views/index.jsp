@@ -66,7 +66,6 @@
 	    <jsp:include page="topMenu.jsp" flush="true">
 		     <jsp:param name="language" value="<%= language %>"/>
 		</jsp:include>
-
 	    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
 	    
 	    <div class="container-fluid">
