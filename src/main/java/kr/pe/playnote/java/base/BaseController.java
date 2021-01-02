@@ -27,12 +27,17 @@ public class BaseController {
 		logger.info("java-base.", locale);
 		
 		String page = request.getParameter("page");
+		String subMenu = request.getParameter("subMenu");
+		
 		System.out.println("page==>"+page);
+		System.out.println("subMenu==>"+subMenu);
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate );
+		model.addAttribute("subMenu", subMenu );
+		
 		
 		return "/java/base/"+page;
 	}

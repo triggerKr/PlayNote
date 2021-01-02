@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
 	   
-        function topMenuGo(url){
+        function topMenuGo(url,subMenu){
             switch (url){
                 case "HOME" :
                     url = "/home/index";
@@ -34,13 +34,13 @@
                     break;
                 case "JAVA_BASE_MAIN" :
                 	alert("JAVA_BASE_MAIN");
-                    url = "/java/base?page=page_001";
+                    url = "/java/base?page=page_001&subMenu="+subMenu;
                     break;    
                     
                 default :
                     url = "/";
             } 
-            alert(url);
+           // alert(url);
             document.form.action  = url;                                                   
             document.form.method = "POST";
             document.form.submit();
@@ -69,22 +69,22 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="javascript:topMenuGo('HOME');">Play Note</a>
+          <a class="navbar-brand" href="javascript:topMenuGo('HOME','');">Play Note</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">HOME <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:topMenuGo('HOME');">HOME</a></li>
-                <li><a href="javascript:topMenuGo('BOARD_NOTICE');"><spring:message code="notice" text="default text" /></a></li>
-                <li><a href="javascript:topMenuGo('BOARD_USER');"><spring:message code="community" text="default text" /></a></li>
+                <li><a href="javascript:topMenuGo('HOME','');">HOME</a></li>
+                <li><a href="javascript:topMenuGo('BOARD_NOTICE','');"><spring:message code="notice" text="default text" /></a></li>
+                <li><a href="javascript:topMenuGo('BOARD_USER','');"><spring:message code="community" text="default text" /></a></li>
               </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">JAVA <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:topMenuGo('JAVA_BASE_MAIN');">BASE</a></li>
+                <li><a href="javascript:topMenuGo('JAVA_BASE_MAIN','');">BASE</a></li>
                 <li><a href="#">GUI</a></li>
                 <li><a href="#">JSP</a></li>
               </ul>
@@ -97,7 +97,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">WEB FRAME<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:topMenuGo('WEB_FRAME_VUE_MAIN');">Vue</a></li>
+                <li><a href="javascript:topMenuGo('WEB_FRAME_VUE_MAIN','');">Vue</a></li>
                 <li><a href="#">React</a></li>
               </ul>
             </li>
@@ -105,12 +105,11 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">ADMIN <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:topMenuGo('ADMIN_NOTICE_LIST');">공지사항</a></li>
+                <li><a href="javascript:topMenuGo('ADMIN_NOTICE_LIST','');">공지사항</a></li>
               </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-                <li><div id="changeLanguage1">KOR</div></li>
 	            <c:if test="${language eq 'ko'}">
 	                <li><button type="submit"  class="btn .btn-default" id="language_btn1" onclick="topMenuLanguage('en')">ENG</button></li>
 	                <li><button type="submit"  class="btn btn-success" id="language_btn2" onclick="topMenuLanguage('ko')">KOR</button></li>
@@ -119,7 +118,7 @@
 		            <li><button type="submit" class="btn btn-success" id="language_btn1" onclick="topMenuLanguage('en')">ENG</button></li>
 		            <li><button type="submit" class="btn .btn-default" id="language_btn2" onclick="topMenuLanguage('ko')">KOR</button></li>
 	            </c:if>
-            <li><a href="javascript:topMenuGo('ADMIN');">ADMIN</a></li>
+            <li><a href="javascript:topMenuGo('ADMIN','');">ADMIN</a></li>
           </ul>
       </div>
     </nav>
