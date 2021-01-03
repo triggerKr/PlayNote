@@ -15,7 +15,6 @@
 	$(document).ready(function(){
         var subMenu = '<c:out value="${subMenu}"/>';
 
-        alert("subMenu"+subMenu);
         switch (subMenu){
 	        case "A1" :
 	        	$("#A1").attr('class','active');

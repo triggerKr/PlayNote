@@ -110,8 +110,7 @@
                 	  var modal = document.getElementById("alertModal");
                 	  modal.style.display = "block";
                       $("p").text("ajax  error");
-                      console.log("ajax  error"); 
-                      //alert(jqXHR.responseText); 
+                      console.log("ajax  error");  
                   }                  
              });
         }  

@@ -29,18 +29,15 @@
                     url = "/admin/noticeList";
                     break;
                 case "WEB_FRAME_VUE_MAIN" :
-                	alert("WEB_FRAME_VUE_MAIN");
                     url = "/webFrame/vueMain";
                     break;
                 case "JAVA_BASE_MAIN" :
-                	alert("JAVA_BASE_MAIN");
                     url = "/java/base?page=page_001&subMenu="+subMenu;
                     break;    
                     
                 default :
                     url = "/";
             } 
-           // alert(url);
             document.form.action  = url;                                                   
             document.form.method = "POST";
             document.form.submit();
