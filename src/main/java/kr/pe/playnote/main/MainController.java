@@ -1,5 +1,7 @@
 package kr.pe.playnote.main;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +40,7 @@ public class MainController {
     @Autowired MessageSource messageSource;
 	
 	/**
-	 * ����ȭ��
+	 * 홈화면
 	 */
 	@RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String home(Locale locale, Model model,HttpServletRequest request) {
@@ -65,7 +67,33 @@ public class MainController {
 
 	
 	/** 
-     * ����
+    * 비밀번호 암호화 테스트
+    * 2021-04-03
+    * 이응규
+    * 
+    */
+   @RequestMapping(value = "/main/passwordTest", method = {RequestMethod.GET, RequestMethod.POST})
+   public String passwordTest(Locale locale, Model model,HttpServletRequest request) {
+       
+//	   String raw = "1111";
+//	   MessageDigest md = MessageDigest.getInstance("SHA-256");
+//	   md.update(raw.getBytes());
+//	   String hex = String.format("%064x", new BigInteger(1, md.digest()));
+//	   
+//       logger.info("Welcome i18n! The client locale is {}.", locale); // localeResolver �κ��� Locale �� ����� ���ϴ�. 
+//       logger.info("locale.toString {}.", locale.toString()); // localeResolver �κ��� Locale �� ����� ���ϴ�.
+//       logger.info("Session locale is {}.", localeResolver.resolveLocale(request));
+//       logger.info("site.title : {}", messageSource.getMessage("site.title", null, "default text", locale));
+//       logger.info("site.count : {}", messageSource.getMessage("site.count", new String[] {"ù��°"}, "default text", locale));
+//       logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale)); //logger.info("not.exist �⺻�� ���� : {}", messageSource.getMessage("not.exist", null, locale)); 
+//        
+//       model.addAttribute("siteCount", messageSource.getMessage("msg.first", null, locale)); 
+       return "index";
+
+   }
+	
+	/** 
+     *
      */
     @RequestMapping(value = "/main/messageChange", method = {RequestMethod.GET, RequestMethod.POST})
     public String messageChange(Locale locale, Model model,HttpServletRequest request) {

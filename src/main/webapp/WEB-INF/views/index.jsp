@@ -50,6 +50,10 @@
 	            case "BOARD_USER" :
 	                url = "/main/boardUser";
 	                break;
+
+	            case "PASSWORD_TEST" :
+	                url = "/main/passwordTest";
+	                break;
 	            default :
 	                url = "/";
 	        }
@@ -76,6 +80,7 @@
 	            <li class="active"><a href="javascript:go_it('HOME');">HOME<span class="sr-only">(current)</span></a></li>
 	            <li class=""><a href="javascript:go_it('BOARD_NOTICE');"><spring:message code="notice" text="default text" /></a></li>
                 <li><a href="javascript:go_it('BOARD_USER');"><spring:message code="community" text="default text" /></a></li>
+                <li><a href="javascript:go_it('PASSWORD_TEST');"><spring:message code="community" text="default text" /></a></li>
 	        </div>
 	        <!--/ LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU         -->
 	        
@@ -85,7 +90,7 @@
 	          
 	          <div class="jumbotron" style="background-image: URL(${pageContext.request.contextPath}/resources/image/header_bg.jpg) ;">
 		        <h1>My life is the wind.</h1>
-		        <p>I came empty-handed. go empty-handed. I only exist in people's memories.</p>
+		        <p>Come empty, return empty. I only exist in people's memories.</p>
 		      </div>
 	          <h2 class="sub-header"><spring:message code="notice" text="default text" /></h2>
 	          <div class="table-responsive">

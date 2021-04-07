@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ page session="true" %>
+<%@ page import="java.util.Locale" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -100,15 +105,15 @@
                          var modal = document.getElementById("alertModal");
                          modal.style.display = "none";
                      }else{
-                    	
-                    	 var modal = document.getElementById("alertModal");
+                        
+                         var modal = document.getElementById("alertModal");
                          modal.style.display = "block";
                          $("p").text(data.msgContent);
                      }
                   }, 
                   error: function(jqXHR, textStatus, errorThrown) { 
-                	  var modal = document.getElementById("alertModal");
-                	  modal.style.display = "block";
+                      var modal = document.getElementById("alertModal");
+                      modal.style.display = "block";
                       $("p").text("ajax  error");
                       console.log("ajax  error");  
                   }                  
@@ -116,7 +121,7 @@
         }  
         
         function success(){
-        	location.href  = "/";  
+            location.href  = "/";  
         }  
         function close(){
             var modal = document.getElementById("alertModal");
@@ -147,14 +152,15 @@
               <input type="checkbox" value="remember-me"> Remember me
             </label>
           </div>
-          <button class="btn btn-lg btn-primary btn-block" onclick="javascript:go_it('SIGN_IN');">Sign in</button>
+          <button class="btn btn-lg btn-primary btn-block" onclick="javascript:go_it('SIGN_IN');"><spring:message code="signIn" text="default text" /></button>
+          <button class="btn btn-lg btn-primary btn-block" onclick="javascript:go_it('SIGN_IN');"><spring:message code="register" text="default text" /></button>
         </div>
-		
-		<!-- Modal 창 -->
-		<div id="alertModal"class="alert alert-warning alert-dismissible fade in" style="display:none;">
-		  <a href="javascript:close();" class="close" aria-label="close">&times;</a>
-		  <strong>Warning!</strong><p></p>
-		</div>
+        
+        <!-- Modal 창 -->
+        <div id="alertModal"class="alert alert-warning alert-dismissible fade in" style="display:none;">
+          <a href="javascript:close();" class="close" aria-label="close">&times;</a>
+          <strong>Warning!</strong><p></p>
+        </div>
     </div>    
     <!-- /container -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

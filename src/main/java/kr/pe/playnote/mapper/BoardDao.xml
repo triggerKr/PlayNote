@@ -26,6 +26,7 @@
     </delete>
     
     <select id="listDao" parameterType="java.util.HashMap" resultType="kr.pe.playnote.main.dto.BoardDto">
+                                                                        
         /* kr.pe.playnote.main.dao.IBoardDao.listDao */
         SELECT @rownum := @rownum+1 AS rnum
               ,UUID             AS  uuid          
