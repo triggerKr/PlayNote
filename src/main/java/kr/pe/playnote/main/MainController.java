@@ -35,9 +35,22 @@ public class MainController {
 	
 	@Autowired
     private BoardService boardService;
-    // �ٱ���
     @Autowired SessionLocaleResolver localeResolver; 
     @Autowired MessageSource messageSource;
+	
+    /** 
+     * 회원가입 화면
+     * 2021-04-03
+     * 이응규
+     * 
+     */
+	@RequestMapping(value = "/main/registerForm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String registerForm(Locale locale, Model model,HttpServletRequest request) {
+		
+		return "main/registerForm";
+		
+	}
+	
 	
 	/**
 	 * 홈화면
@@ -92,26 +105,30 @@ public class MainController {
 
    }
 	
-	/** 
-     *
-     */
+
+   /** 
+   * 언어 바꾸기
+   * 2021-04-03
+   * 이응규
+   * 
+   */
     @RequestMapping(value = "/main/messageChange", method = {RequestMethod.GET, RequestMethod.POST})
     public String messageChange(Locale locale, Model model,HttpServletRequest request) {
         
-        // RequestMapingHandler�� ���� ���� Locale ��ü�� ����� ���ϴ�. 
-        logger.info("Welcome i18n! The client locale is {}.", locale); // localeResolver �κ��� Locale �� ����� ���ϴ�. 
-        logger.info("locale.toString {}.", locale.toString()); // localeResolver �κ��� Locale �� ����� ���ϴ�.
+        logger.info("Welcome i18n! The client locale is {}.", locale);  
+        logger.info("locale.toString {}.", locale.toString());
         logger.info("Session locale is {}.", localeResolver.resolveLocale(request));
         logger.info("site.title : {}", messageSource.getMessage("site.title", null, "default text", locale));
         logger.info("site.count : {}", messageSource.getMessage("site.count", new String[] {"ù��°"}, "default text", locale));
-        logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale)); //logger.info("not.exist �⺻�� ���� : {}", messageSource.getMessage("not.exist", null, locale)); 
-        // JSP ���������� EL �� ����ؼ� arguments �� ���� �� �ֵ��� ���� ������. 
+        logger.info("not.exist : {}", messageSource.getMessage("not.exist", null, "default text", locale)); 
+         
         model.addAttribute("siteCount", messageSource.getMessage("msg.first", null, locale)); 
         return "redirect:/";
 
     }
+    
 	/**
-	 * ��������
+	 * 게시판
 	 */
 	@RequestMapping(value = "/main/boardNotice", method = {RequestMethod.GET, RequestMethod.POST})
 	public String boardNotice(Locale locale, Model model,HttpServletRequest request) {
@@ -136,17 +153,15 @@ public class MainController {
         
         if (request.getParameter("pagenum") != null)
         	cpagenum = Integer.parseInt(request.getParameter("pagenum"));
-                /*---------������ ��ü�� ���ο� ���� �ٽ� �������ִ� �κ�------------------*/
-        pagemaker.setTotalcount(totalCount);//��ü �Խñ� ���� �����Ѵ�
-        pagemaker.setPagenum(cpagenum-1);//���� �������� ������ ��ü�� �ٽ� �������ش�//��� ���������� PageMaker�� �����Ѵ�
-        pagemaker.setContentnum(Code.PAGE_LIMIT_10);//�� �������� ��� �������� �����Ѵ�
-        pagemaker.setCurrentblock(cpagenum);//���� ����������� ������� ���� ������ ��ȣ�� ���ؼ� �����Ѵ�
-        pagemaker.setLastblock(pagemaker.getTotalcount());//������ ��� ��ȣ�� ��ü �Խñ� ���� ���ؼ� ���Ѵ�
-        /*---------������ ��ü�� ���ο� ���� �ٽ� �������ִ� �κ�------------------*/
-        pagemaker.prevnext(cpagenum);//���� ������ ��ȣ�� ȭ��ǥ ��Ÿ���� �����Ѵ�
-        pagemaker.setStartPage(pagemaker.getCurrentblock());//���������� ��ȣ�� ���� ������ ������� ���Ѵ�
+        pagemaker.setTotalcount(totalCount);
+        pagemaker.setPagenum(cpagenum-1);
+        pagemaker.setContentnum(Code.PAGE_LIMIT_10);
+        pagemaker.setCurrentblock(cpagenum);
+        pagemaker.setLastblock(pagemaker.getTotalcount());
+        
+        pagemaker.prevnext(cpagenum);
+        pagemaker.setStartPage(pagemaker.getCurrentblock());
         pagemaker.setEndPage(pagemaker.getLastblock(),pagemaker.getCurrentblock());
-        //���� ��� ��ȣ�� ������ ��� ��ȣ�� ������ �����ϰ� ������ ����� ������ ��ȣ�� �����Ѵ�
         
 		
 		paramMap.put("PAGE_NUM", pagemaker.getPagenum()*10);
@@ -158,7 +173,7 @@ public class MainController {
 		List<BoardDto> boardList = boardService.getPageList(paramMap);
 		
         model.addAttribute("noticeList", boardList);
-        model.addAttribute("page", pagemaker);//������ ��ȣ ��ü .jsp�������� ����
+        model.addAttribute("page", pagemaker);
 		return "main/boardNotice";
 		
 	}

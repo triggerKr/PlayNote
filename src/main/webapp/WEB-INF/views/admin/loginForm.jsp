@@ -31,52 +31,6 @@
     <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/dist/js/bootstrap.min.js"></script>
-    
-  
-    <style>
-        body {
-          padding-top: 40px;
-          padding-bottom: 40px;
-          background-color: #eee;
-        }
-        .div-signin {
-          max-width: 330px;
-          padding: 15px;
-          margin: 0 auto;
-        }
-        .div-signin .div-signin-heading,
-        .div-signin .checkbox {
-          margin-bottom: 10px;
-        }
-        .div-signin .checkbox {
-          font-weight: normal;
-        }
-        .div-signin .div-control {
-          position: relative;
-          height: auto;
-          -webkit-box-sizing: border-box;
-             -moz-box-sizing: border-box;
-                  box-sizing: border-box;
-          padding: 10px;
-          font-size: 16px;
-        }
-        .div-signin .div-control:focus {
-          z-index: 2;
-        }
-        .div-signin input[type="email"] {
-          margin-bottom: -1px;
-          border-bottom-right-radius: 0;
-          border-bottom-left-radius: 0;
-        }
-        .div-signin input[type="password"] {
-          margin-bottom: 10px;
-          border-top-left-radius: 0;
-          border-top-right-radius: 0;
-        }
- 
- 
-    </style>
-    
   </head>
 
     <script type="text/javascript">
@@ -119,6 +73,20 @@
                   }                  
              });
         }  
+
+        function go_register(url){
+            switch (url){
+                case "REGISTER" :
+                    url = "/main/registerForm";
+                    break;
+                default :
+                    url = "/";
+            }
+            
+            document.form.action  = url;                                                   
+            document.form.method = "POST";
+            document.form.submit();
+        }  
         
         function success(){
             location.href  = "/";  
@@ -129,7 +97,6 @@
         }
         
         
-        
     </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
@@ -137,6 +104,7 @@
  
  
   <body>
+    <form name="form" method="post">
     <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
     <jsp:include page="../topMenu.jsp" flush="true"/>
     <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
@@ -153,7 +121,7 @@
             </label>
           </div>
           <button class="btn btn-lg btn-primary btn-block" onclick="javascript:go_it('SIGN_IN');"><spring:message code="signIn" text="default text" /></button>
-          <button class="btn btn-lg btn-primary btn-block" onclick="javascript:go_it('SIGN_IN');"><spring:message code="register" text="default text" /></button>
+          <button class="btn btn-lg btn-primary btn-block" onclick="javascript:go_register('REGISTER');"><spring:message code="register" text="default text" /></button>
         </div>
         
         <!-- Modal 창 -->
@@ -161,7 +129,8 @@
           <a href="javascript:close();" class="close" aria-label="close">&times;</a>
           <strong>Warning!</strong><p></p>
         </div>
-    </div>    
+    </div>
+    </form>    
     <!-- /container -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="${pageContext.request.contextPath}/resources/docs/assets/js/ie10-viewport-bug-workaround.js"></script>
