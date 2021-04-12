@@ -14,30 +14,73 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="${pageContext.request.contextPath}/resources/image/icons-motorcycle-01.png">
-
     <title>Play Note</title>
-    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/dist/css/bootstrap.min.css" >
-    <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/resources/docs/examples/dashboard/dashboard.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/dist/css/signin.css"> -->
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    
     <script src="${pageContext.request.contextPath}/resources/docs/assets/js/ie-emulation-modes-warning.js"></script>
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/dist/js/bootstrap.min.js"></script>
-    
-  
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/dist/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/dist/js/common.js"></script>
+      
   </head>
 
     <script type="text/javascript">
+    function go_register(){
+    	if(!checkValue()){
+    		return;
+    	}
+    	
+    }
+    
+    // 입력값 체크
+    function checkValue(){
+    	
+        var email = $("#email").val();
+        
+        // 이메일 체크
+        if( email.length < 10){
+        	var modal = document.getElementById("alertModal");
+        	modal.style.display = "block";
+            $("p").text("이메일을 확인 하세요.");
+        	return false;
+        }
+     
+        // 이메일 체크
+        if(!CheckEmail(email)){
 
+            var modal = document.getElementById("alertModal");
+            modal.style.display = "block";
+            $("p").text("이메일을 확인 하세요.");
+            return false;
+        }
+        
+        var pwd = $("#pwd").val();
+        var confirmPwd = $("#confirmPwd").val();
+        
+        // 이메일 체크
+        if( (pwd < 7) ||(pwd > 20) ){
+            
+            modal.style.display = "block";
+            $("p").text("이메일을 확인 하세요.");
+            return false;
+        }
+     
+        // 비밀번호 정합성 체크
+        if(!(pwd == confirmPwd)){
+
+            var modal = document.getElementById("alertModal");
+            modal.style.display = "block";
+            $("p").text("비밀번호를 확인 하세요.");
+            return false;
+        }
+     
+    }
+    
     function go_it(type){
          
          var email = $("#inputEmail").val();
@@ -76,42 +119,49 @@
               }                  
          });
     }  
-        
-        
-    email pwd ConfirmPwd name
+    
+    function warningClose(){
+    	var modal = document.getElementById("alertModal");
+    	modal.style.display = "none";
+    }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
  
  
   <body>
-      <form name="form" method="post">
-		    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
-		    <jsp:include page="../topMenu.jsp" flush="true"/>
-		    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
-		    <div class="container">
-			  <h2>Stacked form</h2>
-			    <div class="form-group">
-			      <label for="email" >Email:</label>
-			      <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" >
-			    </div>
-			    <div class="form-group">
-			      <label for="pwd">Password:</label>
-			      <input type="password" class="form-control" id="pwd" name="pswd" placeholder="Enter password" >
-			    </div>
-			    <div class="form-group">
-			      <label for="pwd">Confirm Password:</label>
-			      <input type="password" class="form-control" id="ConfirmPwd" name="ConfirmPwd" placeholder="Enter password" >
-			    </div>
-			    <div class="form-group">
-			      <label for="email">Name:</label>
-			      <input type="email" class="form-control" id="name" name="name" placeholder="Enter Name" >
-			    </div>
-			    <button type="submit" class="btn btn-primary" onclick="javascript:go_it('JOIN_MEMBER');">Submit</button>
+	    
+	    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
+	    <jsp:include page="../topMenu.jsp" flush="true"/>
+	    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
+	    
+	    <form name="form" method="post">
+	    <div class="container">
+		  <h2>회원가입</h2>
+		    <div class="form-group">
+		      <label for="email" >Email:</label>
+		      <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" maxlength=100 onKeyDown="nextFocus(this.form, 'pwd');">
 		    </div>
-		</form>    
-    <!-- /container -->
+		    <div class="form-group">
+		      <label for="pwd">Password: 영문대소 문자, 숫자 7~20</label>
+		      <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Enter password"  maxlength=20  onKeyDown="nextFocus(this.form, 'confirmPwd');">
+		    </div>
+		    <div class="form-group">
+		      <label for="pwd">Confirm Password:</label>
+		      <input type="password" class="form-control" id="confirmPwd" name="confirmPwd" placeholder="Enter password"   maxlength=20  onKeyDown="nextFocus(this.form, 'name');">
+		    </div>
+		    <div class="form-group">
+		      <label for="email">Name:</label>
+		      <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" >
+		    </div>
+		    <button type="submit" class="btn btn-primary"   id="submit" name="submit"  onclick="javascript:go_register();">Submit</button>
+				    
+	        <!-- Modal 창 -->
+	        <div id="alertModal" class="alert alert-warning alert-dismissible fade in" style="display:none;">
+	          <a href="javascript:warningClose();" class="close" aria-label="close">&times;</a>
+	          <strong>Warning!</strong><p></p>
+	        </div>
+	    </div>
+	</form>    
+    
     
   </body>
   
