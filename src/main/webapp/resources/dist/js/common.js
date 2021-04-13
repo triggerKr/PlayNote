@@ -1,38 +1,16 @@
+function checkEmail2(email){                                                 
 
-/** 2021-04-10
- * 이메일이 잘못되었는지 확인하는 함수
- * @param1 : email
- * @return : 
- * 사용예 
- *  <input type="email" id="email" name="email" onKeyDown="nextFocus(this.form, 'pwd');">
- *  <input type="text"   id="pwd" name="pwd"   >
- */
-function CheckEmail(str){                                                 
+	console.log('checkEmail2');
 
-     var reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
-     if(!reg_email.test(str)) {                            
-          return false;         
-     }                            
-     else {                       
-          return true;         
-     }
+	if(email == '') {
+		return false;
+	} else if(email.indexOf("@") < 0 || email.indexOf(".") < 0) {
+	return false;
+	} else {
+	return true;
+}
 }                           
 
-/** 2021-04-10
- * 엔터 입력시 다음 focus 이동
- * @param1 : 다음 focus
- * @return : 
- * 사용예 
- *  <input type="email" id="email" name="email" onKeyDown="nextFocus(this.form, 'pwd');">
- *  <input type="text"   id="pwd" name="pwd"   >
- */
-function nextFocus(frm, next)
-{
-        var keycode = event.keyCode;
-        if( keycode == 13 ){
-        	document.getElementById(next).focus();
-        }
-}
 /**
  *========================================
  * 폼 입력값 검사

@@ -15,6 +15,30 @@ public class MemberServiceImple implements MemberService{
 	@Autowired
 	private SqlSession sqlSession;
 	private String namespace = "kr.pe.playnote.com.dao.IMemberdDao";
+
+	@Override
+    public int memberSave(MemberDto dto) {
+		
+		String sqlId = ".memberSave";
+		String sql = sqlSession.getConfiguration().getMappedStatement(namespace+sqlId).getBoundSql(dto).getSql();
+		System.out.println("==== memberSave ====");
+	    System.out.println(sql);
+	    int result = sqlSession.insert(namespace+sqlId, dto);
+		 
+       return result;
+    }
+	
+	@Override
+    public MemberDto emailDuplicateCheck(HashMap<String, Object> paramMap) {
+		
+		String sqlId = ".emailDuplicateCheck";
+		String sql = sqlSession.getConfiguration().getMappedStatement(namespace+sqlId).getBoundSql(paramMap).getSql();
+		System.out.println("==== emailDuplicateCheck ====");
+	    System.out.println(sql);
+	    MemberDto dto = sqlSession.selectOne(namespace+sqlId, paramMap);
+		 
+       return dto;
+    }
 	
 	@Override
     public List<MemberDto> list( HashMap<String, Object> paramMap ) {

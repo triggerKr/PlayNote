@@ -38,16 +38,16 @@
                 default :
                     url = "/";
             } 
-            document.form.action  = url;                                                   
-            document.form.method = "POST";
-            document.form.submit();
+            document.topform.action  = url;                                                   
+            document.topform.method = "POST";
+            document.topform.submit();
         }  
         
         function topMenuLanguage(language){
         	var url = "/main/messageChange?lang="+language;
-            document.form.action  = url;                                            
-            document.form.method = "POST";
-            document.form.submit();
+            document.topform.action  = url;                                            
+            document.topform.method = "POST";
+            document.topform.submit();
         }  
         
     </script>

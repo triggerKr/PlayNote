@@ -8,4 +8,8 @@ public interface MemberService {
 	public List<MemberDto> list(HashMap<String, Object> paramMap);
 	public MemberDto detail(HashMap<String, Object> paramMap);
 	public MemberDto loginChk(HashMap<String, Object> paramMap);
+	public MemberDto emailDuplicateCheck(HashMap<String, Object> paramMap);
+	public int memberSave(MemberDto dto);
+	
+	
 }

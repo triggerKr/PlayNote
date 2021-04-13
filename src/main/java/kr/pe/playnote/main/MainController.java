@@ -1,7 +1,5 @@
 package kr.pe.playnote.main;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +7,8 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import kr.pe.playnote.com.Code;
 import kr.pe.playnote.com.PageMaker;
+import kr.pe.playnote.com.dto.MemberDto;
+import kr.pe.playnote.com.service.MemberService;
 import kr.pe.playnote.main.dto.BoardDto;
 import kr.pe.playnote.main.service.BoardService;
 
@@ -35,8 +37,119 @@ public class MainController {
 	
 	@Autowired
     private BoardService boardService;
+
+	@Autowired
+    private MemberService memberService;
+	
     @Autowired SessionLocaleResolver localeResolver; 
     @Autowired MessageSource messageSource;
+	
+    
+
+    /** 
+     * 회원저장
+     * 2021-04-13
+     * 이응규
+     * 
+     */
+	@RequestMapping(value = "/main/memberSave", method = {RequestMethod.GET, RequestMethod.POST})
+	public String memberSave(Locale locale, Model model, HttpServletRequest request, MemberDto dto) {
+		
+		String email      = dto.getEmail();
+		String password = dto.getPassword();
+		String username = dto.getUsername();
+		
+		String email1 = request.getParameter("email");
+		logger.info("email["+email+"]  password["+password+"]  username["+username+"]  ");
+		
+		HashMap<String, Object> paramMap =  new HashMap<String, Object>();
+		paramMap.put("EMAIL", email);
+		paramMap.put("EMAIL", email);
+		paramMap.put("EMAIL", email);
+		
+		int result = memberService.memberSave(dto);
+		String msgCode = "";
+		String msgContent = "";
+		
+		if( result == 1) {
+			
+			msgCode = "SUCCESS";
+			MemberDto memberDto = memberService.detail(paramMap);
+			HttpSession session = request.getSession(true);
+			session.setAttribute(Code.SESSION_INFO, memberDto);
+			
+		
+		}else {
+            msgCode = "FAIL";
+            msgContent = messageSource.getMessage("mag_004", null, "default text", locale);
+        }
+		
+        JSONObject jsonObject1 = new JSONObject(); // 중괄호에 들어갈 속성 정의 { "a" : "1", "b" : "2" }
+        JSONArray jsonArray1 = new JSONArray(); // 대괄호 정의 [{ "a" : "1", "b" : "2" }]
+        JSONObject finalJsonObject1 = new JSONObject(); // 중괄호로 감싸 대괄호의 이름을 정의함 { "c" : [{  "a" : "1", "b" : "2" }] }
+        
+        
+        finalJsonObject1.put("msgCode", msgCode);
+        finalJsonObject1.put("msgContent", msgContent);
+        
+        String json = finalJsonObject1.toString();
+
+        System.out.println(json);
+	    request.setAttribute("data", json);
+		return "comm/json";
+		
+	}
+    
+    /** 
+     * 이메일 중복 검사
+     * 2021-04-12
+     * 이응규
+     * 
+     */
+	@RequestMapping(value = "/main/emailDuplicateCheck", method = {RequestMethod.GET, RequestMethod.POST})
+	public String emailDuplicateCheck(Locale locale, Model model, HttpServletRequest request) {
+		
+		String email = request.getParameter("email");
+		logger.info("email["+email+"]  ");
+		
+		HashMap<String, Object> paramMap =  new HashMap<String, Object>();
+		paramMap.put("EMAIL", email);
+		
+		MemberDto dto = memberService.emailDuplicateCheck(paramMap);
+		String msgCode = "";
+		String msgContent = "";
+		
+		if( dto != null) {
+			if("N".equals(dto.getEmailChk()) ) {
+				msgCode = "SUCCESS";
+				MemberDto memberDto = memberService.detail(paramMap);
+				HttpSession session = request.getSession(true);
+				session.setAttribute(Code.SESSION_INFO, memberDto);
+				
+			}else {
+	            msgCode = "FAIL";
+	            msgContent = messageSource.getMessage("mag_004", null, "default text", locale);
+			}
+		}else {
+			msgCode = "FAIL";
+			msgContent = messageSource.getMessage("mag_004", null, "default text", locale);
+		}
+		
+        JSONObject jsonObject1 = new JSONObject(); // 중괄호에 들어갈 속성 정의 { "a" : "1", "b" : "2" }
+        JSONArray jsonArray1 = new JSONArray(); // 대괄호 정의 [{ "a" : "1", "b" : "2" }]
+        JSONObject finalJsonObject1 = new JSONObject(); // 중괄호로 감싸 대괄호의 이름을 정의함 { "c" : [{  "a" : "1", "b" : "2" }] }
+        
+        
+        finalJsonObject1.put("msgCode", msgCode);
+        finalJsonObject1.put("msgContent", msgContent);
+        
+        String json = finalJsonObject1.toString();
+
+        System.out.println(json);
+	    request.setAttribute("data", json);
+		return "comm/json";
+		
+	}
 	
     /** 
      * 회원가입 화면
@@ -179,7 +292,7 @@ public class MainController {
 	}
 	
 	/**
-	 * �������� ��
+	 * 게시판 상세
 	 *  /main/boardNoticeDetail?uuid="+uuid;
 	 */
 	@RequestMapping(value = "/main/boardNoticeDetail", method = {RequestMethod.GET, RequestMethod.POST})

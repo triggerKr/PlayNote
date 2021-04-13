@@ -35,8 +35,6 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
-	  
 	<script type="text/javascript">
 	
 	    function go_it(url){
@@ -64,14 +62,16 @@
 	    }  
 	    
 	</script>
-  <body>
-    <form name="form" method="post">
+	
+  </head>
+      
         <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
 	    <jsp:include page="topMenu.jsp" flush="true">
 		     <jsp:param name="language" value="<%= language %>"/>
 		</jsp:include>
 	    <!--/ TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU     TOP MENU         -->
 	    
+        <form name="form" method="post">
 	    <div class="container-fluid">
 	      <div class="row">
 	        <!--/ LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU     LEFT MENU         -->
@@ -157,7 +157,6 @@
     <script src="${pageContext.request.contextPath}/resources/docs/assets/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="${pageContext.request.contextPath}/resources/docs/assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
 </html>
 
 
