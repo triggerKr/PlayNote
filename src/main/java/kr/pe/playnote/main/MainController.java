@@ -3,6 +3,7 @@ package kr.pe.playnote.main;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -58,13 +59,14 @@ public class MainController {
 		String email      = dto.getEmail();
 		String password = dto.getPassword();
 		String username = dto.getUsername();
+		String uuid =  UUID.randomUUID().toString();
 		
-		String email1 = request.getParameter("email");
+		dto.setUuid(uuid);
+		dto.setCreateUser(email);
+		
 		logger.info("email["+email+"]  password["+password+"]  username["+username+"]  ");
 		
 		HashMap<String, Object> paramMap =  new HashMap<String, Object>();
-		paramMap.put("EMAIL", email);
-		paramMap.put("EMAIL", email);
 		paramMap.put("EMAIL", email);
 		
 		int result = memberService.memberSave(dto);
@@ -128,11 +130,11 @@ public class MainController {
 				
 			}else {
 	            msgCode = "FAIL";
-	            msgContent = messageSource.getMessage("mag_004", null, "default text", locale);
+	            msgContent = messageSource.getMessage("mag_005", null, "default text", locale);
 			}
 		}else {
 			msgCode = "FAIL";
-			msgContent = messageSource.getMessage("mag_004", null, "default text", locale);
+			msgContent = messageSource.getMessage("mag_005", null, "default text", locale);
 		}
 		
         JSONObject jsonObject1 = new JSONObject(); // 중괄호에 들어갈 속성 정의 { "a" : "1", "b" : "2" }

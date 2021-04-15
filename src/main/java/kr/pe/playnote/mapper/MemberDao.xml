@@ -27,23 +27,23 @@
 		        ,UPDATE_USER 
 		       )
 		VALUES(
-		         'UUID'
-		        ,#{email}
-		        ,'PASSWORD'
-		        ,'USERNAME'
-		        ,'NICKNAME'
-		        ,'GRADE'
-		        ,'PHONE'
-		        ,'Y'
-		        ,NOW()
-		        ,NULL
-		        ,'LASTLOGIN_IP'
-		        ,'N'
-		        ,'ADMINMEMO'
-		        ,NOW()
-		        ,'CREATE_USER'
-		        ,NULL
-		        ,NULL
+				 #{uuid}
+				,#{email}
+				,#{password}
+				,#{username}
+				,#{nickname}
+				,#{grade}
+				,#{phone}
+				,#{emailCert}
+				,NOW()
+				,#{lastloginDatetime}
+				,#{lastloginIp}
+				,#{isAdmin}
+				,#{adminmemo}
+				,NOW()
+				,#{createUser}
+				,#{updateDatetime}
+				,#{updateUser}
 		      )
      </insert>
 

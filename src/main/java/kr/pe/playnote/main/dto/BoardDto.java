@@ -14,7 +14,8 @@ public class BoardDto {
     private String subject;         
     private String contents;        
     private int    hits;            
-    private Date   createDatetime;  
+    private Date   createDatetime;
+    
     public String getUserName() {
 		return userName;
 	}

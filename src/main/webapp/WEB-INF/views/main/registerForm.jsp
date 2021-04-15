@@ -83,6 +83,16 @@
             $("p").text("비밀번호를 확인 하세요.");
             return false;
         }
+        
+        var name = $("#name").val();
+        // 이름입력 체크
+        if( name.length < 1 ){
+
+            modal.style.display = "block";
+            $("p").text("이름을 입력 하세요.");
+            return false;
+        }
+        
         return true;
     }
 
@@ -162,7 +172,7 @@
                  console.log("==== data.msgCode ==>"+data.msgCode);
                  console.log("==== data.msgContent ==>"+data.msgContent);
                  if( data.msgCode == "SUCCESS"){
-                     save(); 
+                	 success(); 
                   
                      var modal = document.getElementById("alertModal");
                      modal.style.display = "none";
